@@ -12,6 +12,14 @@ namespace TaskBaseApp.Service;
 /// </summary>
 public interface ITaskServices
 {
+
+	/// <summary>
+	/// פעולה לקבלת המשתמש הנוכחי.
+	/// </summary>
+	/// <param name="username"></param>
+	/// <returns></returns>
+	public User? GetCurrentUser(string username);
+	
 	/// <summary>
 	/// פעולה לאימות פרטי משתמש.
 	/// </summary>

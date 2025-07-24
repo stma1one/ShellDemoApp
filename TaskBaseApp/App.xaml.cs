@@ -1,9 +1,11 @@
-﻿using TaskBaseApp.Views;
+﻿using TaskBaseApp.Models;
+using TaskBaseApp.Views;
 
 namespace TaskBaseApp
 {
     public partial class App : Application
     {
+		public User? CurrentUser { get; set; }
 		Page? firstpage;
 		public App(IServiceProvider provider)
 		{
@@ -15,8 +17,8 @@ namespace TaskBaseApp
 		protected override Window CreateWindow(IActivationState? activationState)
 		{
 			//return new Window(new MyAppShell());
-		 return new Window(new AppShell());
-		//	return new Window(firstpage!);
+		// return new Window(new AppShell());
+			return new Window(firstpage!);
 		}
 	}
 }

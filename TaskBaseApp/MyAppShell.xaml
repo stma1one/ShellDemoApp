@@ -4,16 +4,26 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:TaskBaseApp.Views"
+    xmlns:viewmodel="clr-namespace:TaskBaseApp.ViewModels"
     Title="TaskBaseApp"
+    x:DataType="viewmodel:AppShellViewModel"
     FlowDirection="RightToLeft">
-
+    <Shell.TitleView>
+        <Button
+            Margin="5"
+            BackgroundColor="Wheat"
+            Command="{Binding LogoutCommand}"
+            HorizontalOptions="Start"
+            ImageSource="logout.png"
+            WidthRequest="80" />
+    </Shell.TitleView>
 
     <Tab Title="חיבור" Icon="add.png">
         <ShellContent
-            Title="Home"
-            ContentTemplate="{DataTemplate local:LoginPage}"
-            Icon="home.png"
-            Route="TasksPage" />
+            Title="הוסף משימה"
+            ContentTemplate="{DataTemplate local:AddTaskPage}"
+            Icon="add.png"
+            Route="AddNewTaskPage" />
         <ShellContent
             Title="משימות"
             ContentTemplate="{DataTemplate local:UserTasksPage}"
@@ -21,13 +31,16 @@
             Route="UserTaskPage" />
 
     </Tab>
-    <Tab Icon="home.png">
+    <Tab Title="פרופיל" Icon="profile.png">
         <ShellContent
-            Title="הוסף משימה"
-            ContentTemplate="{DataTemplate local:AddTaskPage}"
-            Icon="add.png"
-            Route="AddNewTaskPage" />
-
+            Title="Home"
+            ContentTemplate="{DataTemplate local:UserProfilePage}"
+            Route="UserProfilePage" />
     </Tab>
+
+
+
+
+
 </Shell>
 

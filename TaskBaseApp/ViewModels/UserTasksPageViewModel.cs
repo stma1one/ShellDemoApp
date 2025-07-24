@@ -28,7 +28,7 @@ public class UserTasksPageViewModel:ViewModelBase
 
 
 	#region Properties
-	public ObservableUserTask SelectedTask
+	public ObservableUserTask? SelectedTask
 	{
 		get => selectedTask;
 		set
@@ -156,7 +156,7 @@ public class UserTasksPageViewModel:ViewModelBase
 
 
 	}
-	/// <summary>
+	
 	private async Task FilterTasks(string query)
 	{
 		IsLoading = true;

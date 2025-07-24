@@ -208,14 +208,18 @@ public class LoginPageViewModel : ViewModelBase
 			// במקרה של הצלחה
 			LoginMessage = AppMessages.LoginMessage;
 			MessageColor = Colors.Green;
-			// כאן ניתן להוסיף ניווט לדף הבא
-			Application.Current.Windows[0].Page = new AppShell();
+			((App)Application.Current!).CurrentUser = db.GetCurrentUser(UserName!); // מאחסן את המשתמש הנוכחי באפליקציה
+			var shellVm = provider.GetService<AppShellViewModel>()!;                                                                    // כאן ניתן להוסיף ניווט לדף הבא
+			if (UserName != "user2")
+			Application.Current.Windows[0].Page = new AppShell(shellVm);
+			else
+				Application.Current.Windows[0].Page = new MyAppShell(shellVm);
 
-			
+
 		}
 		else
 		{
-			await Shell.Current.DisplayAlert("חיבור כושל", AppMessages.LoginErrorMessage, "אישור");
+			await Application.Current!.Windows[0].Page!.DisplayAlert("חיבור כושל", AppMessages.LoginErrorMessage, "אישור");
 			// במקרה של כישלון
 			//LoginMessage = AppMessages.LoginErrorMessage;
 

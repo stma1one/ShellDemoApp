@@ -35,10 +35,12 @@ namespace TaskBaseApp
 	#region load Pages
 	public static MauiAppBuilder AddPages(this MauiAppBuilder builder)
         {
-			builder.Services.AddSingleton<Views.LoginPage>();
+			builder.Services.AddTransient<Views.LoginPage>();
             builder.Services.AddTransient<Views.AddTaskPage>();
             builder.Services.AddTransient<Views.UserTasksPage>();
             builder.Services.AddTransient<Views.TaskDetailsPage>();
+            builder.Services.AddSingleton<AppShell>();
+
 
 			return builder;
 		}
@@ -50,7 +52,8 @@ namespace TaskBaseApp
             builder.Services.AddTransient<AddTaskPageViewModel>();
             builder.Services.AddTransient<UserTasksPageViewModel>();
 			builder.Services.AddTransient<TaskDetailsPageViewModel>();
-           
+            builder.Services.AddSingleton<AppShellViewModel>();
+          
             return builder;
 		}
 		#endregion

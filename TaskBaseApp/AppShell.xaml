@@ -4,7 +4,9 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:TaskBaseApp.Views"
-    Title="TaskBaseApp">
+    xmlns:viewmodels="clr-namespace:TaskBaseApp.ViewModels"
+    Title="TaskBaseApp"
+    x:DataType="viewmodels:AppShellViewModel">
     <Shell.FlyoutHeader>
         <StackLayout>
             <Image Source="dotnet_bot.png" />
@@ -18,14 +20,24 @@
 
     <FlyoutItem
         Title="ראשי"
-        FlyoutDisplayOptions="AsMultipleItems"
-        FlyoutIcon="home.png">
+        FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent
             Title="Home"
-            ContentTemplate="{DataTemplate local:LoginPage}"
+            ContentTemplate="{DataTemplate local:UserProfilePage}"
+            FlyoutItemIsVisible="{Binding IsAdmin}"
             Icon="home.png"
+            IsVisible="{Binding IsAdmin}"
             Route="TasksPage" />
 
+
+        <ShellContent
+            Title="משימות"
+            ContentTemplate="{DataTemplate local:UserTasksPage}"
+            Icon="view.png"
+            Route="UserTaskPage" />
+    </FlyoutItem>
+
+    <FlyoutItem>
         <ShellContent
             Title="הוסף משימה"
             ContentTemplate="{DataTemplate local:AddTaskPage}"
@@ -33,10 +45,8 @@
             Route="AddNewTaskPage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="משימות" Icon="view.png">
-        <ShellContent ContentTemplate="{DataTemplate local:UserTasksPage}" Route="UserTaskPage" />
-
-    </FlyoutItem>
-
-    <MenuItem IconImageSource="view.png" Text="עזרה"  />
+    <MenuItem
+        Command="{Binding LogoutCommand}"
+        IconImageSource="logout.png"
+        Text="יציאה" />
 </Shell>

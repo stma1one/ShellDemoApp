@@ -24,9 +24,9 @@ public class DBMokup : ITaskServices
 	public DBMokup()
 	{
 		// אתחול משתמשים לדוגמה
-		users.Add(new Models.User { UserId = 1, Username = "admin", Password = "admin" });
-		users.Add(new Models.User { UserId = 2, Username = "user1", Password = "password1" });
-		users.Add(new Models.User { UserId = 3, Username = "user2", Password = "password2" });
+		users.Add(new Models.User { UserId = 1, Username = "admin", Password = "admin", IsAdmin=true });
+		users.Add(new Models.User { UserId = 2, Username = "user1", Password = "password1",IsAdmin=false });
+		users.Add(new Models.User { UserId = 3, Username = "user2", Password = "password2", IsAdmin=false });
 
 		// אתחול רמות דחיפות
 		urgencyLevels.Add(new UrgencyLevel { UrgencyLevelId = 1, UrgencyLevelName = "נמוכה" });
@@ -168,5 +168,15 @@ public class DBMokup : ITaskServices
 			}).ToList(),
 			TaskImage = x.TaskImage // Assuming TaskImage is a property in UserTask
 		}).ToList();
+	}
+
+	/// <summary>
+	/// מחזיר את המשתמש הנוכחי על פי שם המשתמש שניתן.
+	/// </summary>
+	/// <param name="username"></param>
+	/// <returns></returns>
+	public User? GetCurrentUser(string username)
+	{
+		return users.FirstOrDefault(u => u.Username == username);
 	}
 }
