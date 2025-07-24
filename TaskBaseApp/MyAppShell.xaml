@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="TaskBaseApp.MyAppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:TaskBaseApp.Views"
+    Title="TaskBaseApp"
+    FlowDirection="RightToLeft">
+
+
+    <Tab Title="חיבור" Icon="add.png">
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:LoginPage}"
+            Icon="home.png"
+            Route="TasksPage" />
+        <ShellContent
+            Title="משימות"
+            ContentTemplate="{DataTemplate local:UserTasksPage}"
+            Icon="view.png"
+            Route="UserTaskPage" />
+
+    </Tab>
+    <Tab Icon="home.png">
+        <ShellContent
+            Title="הוסף משימה"
+            ContentTemplate="{DataTemplate local:AddTaskPage}"
+            Icon="add.png"
+            Route="AddNewTaskPage" />
+
+    </Tab>
+</Shell>
+

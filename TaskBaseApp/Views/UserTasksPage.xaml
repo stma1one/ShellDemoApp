@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TaskBaseApp.Views.UserTasksPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:TaskBaseApp.Models"
+    xmlns:viewmodels="clr-namespace:TaskBaseApp.ViewModels"
+    Title="UserTasksPage"
+    x:DataType="viewmodels:UserTasksPageViewModel">
+
+    <Grid Margin="15" RowDefinitions=".1*,.9*,auto">
+        <Border Stroke="Transparent">
+            <HorizontalStackLayout>
+                <SearchBar
+                    Placeholder="חפש משימה"
+                    SearchCommand="{Binding FilterTaskCommand}"
+                    SearchCommandParameter="{Binding Source={x:RelativeSource Self}, x:DataType=SearchBar, Path=Text}"
+                    Text="{Binding SearchText, Mode=TwoWay}"
+                    WidthRequest="280" />
+                <Button
+                    Background="Transparent"
+                    Command="{Binding ClearFilterCommand}"
+                    FontFamily="MaterialSymbols"
+                    FontSize="25"
+                    Text="&#xeb32;"
+                    TextColor="BlueViolet" />
+            </HorizontalStackLayout>
+        </Border>
+        <RefreshView
+            Grid.Row="1"
+            Command="{Binding LoadTasksCommand}"
+            IsRefreshing="{Binding IsBusy}">
+            <CollectionView
+                x:Name="taskCollections"
+                ItemsSource="{Binding Tasks}"
+                SelectedItem="{Binding SelectedTask}"
+                SelectionChangedCommand="{Binding ShowDetailsPageCommand}"
+                
+                SelectionMode="Single">
+                <CollectionView.Header>
+                    <StackLayout>
+                        <Label FontSize="24" Text="זוהי כותרת" />
+                    </StackLayout>
+                </CollectionView.Header>
+                <CollectionView.Footer>
+                    <Label Text="כותרת תחתית" />
+                </CollectionView.Footer>
+                <!--  תצוגה ריקה  -->
+                <CollectionView.EmptyView>
+                    <StackLayout
+                        Padding="20"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Text="לא נמצאו משימות."
+                            TextColor="Gray" />
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Text="גרור כלפי מטה לרענון."
+                            TextColor="Gray" />
+                    </StackLayout>
+
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+
+                    <DataTemplate x:DataType="models:ObservableUserTask">
+                        <SwipeView>
+                            <!--  כיוון גרירה  -->
+                            <SwipeView.RightItems>
+                                <!--  שימוש בתמונה וטקסט  -->
+                                <SwipeItem
+                                    Command="{Binding Path=DeleteTaskCommand, Source={x:RelativeSource AncestorType={x:Type viewmodels:UserTasksPageViewModel}, Mode=FindAncestorBindingContext}, x:DataType='viewmodels:UserTasksPageViewModel'}"
+                                    CommandParameter="{Binding .}"
+                                    Text="מחיקה">
+                                    <!--  שימוש בICONS  -->
+                                    <SwipeItem.IconImageSource>
+                                        <FontImageSource>
+                                            <FontImageSource.FontFamily>MaterialSymbols</FontImageSource.FontFamily>
+                                            <FontImageSource.Glyph>&#xe872;</FontImageSource.Glyph>
+                                        </FontImageSource>
+                                    </SwipeItem.IconImageSource>
+                                </SwipeItem>
+                                <SwipeItem
+                                    Command="{Binding Path=ShowDetailsPageCommand, Source={x:RelativeSource AncestorType={x:Type viewmodels:UserTasksPageViewModel}}, x:DataType='viewmodels:UserTasksPageViewModel'}"
+                                    CommandParameter="{Binding .}"
+                                    IconImageSource="view.png"
+                                    Text="צפייה" />
+                            </SwipeView.RightItems>
+
+                            <!--  Use a Grid inside a Border for a modern card view  -->
+                            <Border
+                                Margin="15,7"
+                                Padding="15"
+                                BackgroundColor="White"
+                                Stroke="LightGray"
+                                StrokeShape="RoundRectangle 10">
+
+                                <Grid
+                                    ColumnDefinitions="*, Auto"
+                                    RowDefinitions="Auto, Auto"
+                                    RowSpacing="5">
+                                    <!--  Task Description  -->
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="16"
+                                        Text="{Binding TaskDescription}"
+                                        VerticalOptions="Center" />
+                                    <!--  Due Date  -->
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        FontSize="13"
+                                        Text="{Binding TaskDueDate, StringFormat='Due: {0:dd/MM/yyyy}'}"
+                                        TextColor="Gray"
+                                        VerticalOptions="Center" />
+                                    <!--  Urgency Level as a Chip  -->
+                                    <Border
+                                        Grid.RowSpan="2"
+                                        Grid.Column="1"
+                                        Padding="10,5"
+                                        BackgroundColor="LightGray"
+                                        StrokeShape="RoundRectangle 15"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="12"
+                                            Text="{Binding UrgencyLevel.UrgencyLevelName}"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+        <Button
+            Grid.Row="2"
+            Command="{Binding ChangeTaskDescriptionCommand}"
+            Text="+"
+            WidthRequest="50" />
+    </Grid>
+</ContentPage>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TaskBaseApp.Views.TaskDetailsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:TaskBaseApp.Models"
+    xmlns:viewmodels="clr-namespace:TaskBaseApp.ViewModels"
+    Title="פרטי משימה"
+    x:DataType="viewmodels:TaskDetailsPageViewModel"
+    FlowDirection="RightToLeft">
+
+
+
+    <!--  רקע הדף, מועתק מהדפים האחרים לשמירה על אחידות  -->
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="LightCyan" />
+            <GradientStop Offset="0.5" Color="#3a7bd5" />
+            <GradientStop Offset="1.0" Color="Purple" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ScrollView>
+        <!--  תוכן הדף יוצג רק אם המשימה אינה ריקה  -->
+        <VerticalStackLayout Padding="25" Spacing="18">
+
+            <!--  תמונה ראשית של המשימה  -->
+            <Border
+                Padding="5"
+                BackgroundColor="#40FFFFFF"
+                Stroke="#ccc"
+                StrokeShape="RoundRectangle 8"
+                StrokeThickness="1">
+                <Image
+                    Aspect="AspectFill"
+                    HeightRequest="200"
+                    Source="{Binding CurrentTask.TaskImage, TargetNullValue='dotnet_bot.png'}" />
+            </Border>
+
+            <!--  תיאור המשימה  -->
+            <VerticalStackLayout Spacing="5">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Text="תיאור המשימה:"
+                    TextColor="Snow" />
+                <Border
+                    Padding="12"
+                    Stroke="#ccc"
+                    StrokeShape="RoundRectangle 8"
+                    StrokeThickness="1">
+                    <Label
+                        FontSize="18"
+                        LineBreakMode="WordWrap"
+                        Text="{Binding CurrentTask.TaskDescription}"
+                        TextColor="Wheat" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!--  פרטים נוספים בתוך Grid מסודר  -->
+            <Border
+                Padding="15"
+                Stroke="#ccc"
+                StrokeShape="RoundRectangle 8"
+                StrokeThickness="1">
+                <Grid ColumnDefinitions="*,Auto" RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!--  שורה 1: משתמש משויך  -->
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="שויך למשתמש:"
+                        TextColor="Snow"
+                        VerticalOptions="Center" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        FontSize="16"
+                        HorizontalOptions="Start"
+                        Text="{Binding CurrentTask.User.FullName}"
+                        TextColor="Wheat"
+                        VerticalOptions="Center" />
+
+                    <!--  שורה 2: תאריך יעד  -->
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="תאריך יעד:"
+                        TextColor="Snow"
+                        VerticalOptions="Center" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        FontSize="16"
+                        HorizontalOptions="Start"
+                        Text="{Binding CurrentTask.TaskDueDate, StringFormat='{0:dd/MM/yyyy}'}"
+                        TextColor="Wheat"
+                        VerticalOptions="Center" />
+
+                    <!--  שורה 3: רמת דחיפות  -->
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="רמת דחיפות:"
+                        TextColor="Snow"
+                        VerticalOptions="Center" />
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HorizontalOptions="Start"
+                        Text="{Binding CurrentTask.UrgencyLevel.UrgencyLevelName}"
+                        TextColor="Wheat"
+                        VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+            <!--  קו מפריד  -->
+            <BoxView
+                Margin="0,10"
+                HeightRequest="1"
+                Color="#90FFFFFF" />
+
+            <!--  אזור התגובות  -->
+            <Label
+                FontAttributes="Bold"
+                FontSize="22"
+                HorizontalOptions="Center"
+                Text="{Binding CommentsTitle}"
+                TextColor="Snow" />
+
+            <!--  רשימת התגובות (תוצג רק אם ישנן תגובות)  -->
+            <CollectionView IsVisible="{Binding HasComments}" ItemsSource="{Binding CurrentTask.TaskComments}">
+                <CollectionView.Header>
+                    <Label Text="{Binding CommentsTitle}" />
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TaskComment">
+                        <Border
+                            Margin="0,5"
+                            Padding="10"
+                            BackgroundColor="#20FFFFFF"
+                            Stroke="LightGray"
+                            StrokeShape="RoundRectangle 6">
+                            <VerticalStackLayout Spacing="5">
+                                <Label
+                                    FontSize="16"
+                                    LineBreakMode="WordWrap"
+                                    Text="{Binding Comment}"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="12"
+                                    HorizontalOptions="End"
+                                    Text="{Binding CommentDate, StringFormat='נוסף בתאריך: {0:dd/MM/yyyy}'}"
+                                    TextColor="LightGray" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

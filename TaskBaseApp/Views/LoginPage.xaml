@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TaskBaseApp.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:view="clr-namespace:TaskBaseApp.Views"
+    xmlns:viewmodels="clr-namespace:TaskBaseApp.ViewModels"
+    Title="כניסה למערכת"
+    x:DataType="viewmodels:LoginPageViewModel"
+    FlowDirection="RightToLeft"
+    IsBusy="{Binding IsBusy}">
+   
+
+
+    <!--  רקע דף  -->
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="LightCyan" />
+            <GradientStop Offset="0.5" Color="#3a7bd5" />
+            <GradientStop Offset="1.0" Color="Purple" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+
+
+    <VerticalStackLayout
+        Padding="30"
+        Spacing="25"
+        VerticalOptions="Center">
+
+        <!--  כותרת  -->
+        <Label
+            FontAttributes="Bold"
+            FontSize="32"
+            HorizontalOptions="Center"
+            Text="כניסה"
+            TextColor="Snow" />
+
+        <!--  שם משתמש  -->
+        <Border
+            Padding="10"
+            Stroke="#ccc"
+            StrokeShape="RoundRectangle 8"
+            StrokeThickness="1">
+            <Entry
+                FontSize="18"
+                Placeholder="שם משתמש"
+                Text="{Binding UserName}"
+                TextColor="Wheat" />
+        </Border>
+
+        <!--  סיסמה עם כפתור צפייה  -->
+        <Border
+            Stroke="#ccc"
+            StrokeShape="RoundRectangle 8"
+            StrokeThickness="1">
+            <Grid
+                Padding="10"
+                ColumnDefinitions="*,Auto"
+                VerticalOptions="Center">
+                <Entry
+                    BackgroundColor="Transparent"
+                    FontSize="18"
+                    IsPassword="{Binding IsPassword}"
+                    Placeholder="סיסמה"
+                    Text="{Binding Password}"
+                    TextColor="Wheat"
+                    VerticalOptions="Center" />
+                <Button
+                    Margin="5,0,0,0"
+                    Padding="0"
+                    BackgroundColor="Transparent"
+                    Command="{Binding ShowPasswordCommand}"
+                    FontFamily="MaterialSymbols"
+                    FontSize="24"
+                    HorizontalOptions="End"
+                    Text="{Binding ShowPasswordIcon}"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <!--  כפתור כניסה  -->
+        <Button
+            Command="{Binding LoginCommand}"
+            CornerRadius="8"
+            FontSize="18"
+            HeightRequest="50"
+            Text="חיבור"
+            TextColor="White" />
+        <!--  שגיאה  -->
+        <Label
+            FontSize="45"
+            HorizontalTextAlignment="Center"
+            IsVisible="{Binding MessageIsVisible}"
+            Text="{Binding LoginMessage}"
+            TextColor="{Binding MessageColor}" />
+
+    </VerticalStackLayout>
+</ContentPage>
+

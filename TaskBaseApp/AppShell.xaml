@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="TaskBaseApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:TaskBaseApp.Views"
+    Title="TaskBaseApp">
+    <Shell.FlyoutHeader>
+        <StackLayout>
+            <Image Source="dotnet_bot.png" />
+        </StackLayout>
+    </Shell.FlyoutHeader>
+
+    <Shell.FlyoutFooter>
+        <Label Text="Created by Tal Simon" />
+    </Shell.FlyoutFooter>
+
+
+    <FlyoutItem
+        Title="ראשי"
+        FlyoutDisplayOptions="AsMultipleItems"
+        FlyoutIcon="home.png">
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:LoginPage}"
+            Icon="home.png"
+            Route="TasksPage" />
+
+        <ShellContent
+            Title="הוסף משימה"
+            ContentTemplate="{DataTemplate local:AddTaskPage}"
+            Icon="add.png"
+            Route="AddNewTaskPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="משימות" Icon="view.png">
+        <ShellContent ContentTemplate="{DataTemplate local:UserTasksPage}" Route="UserTaskPage" />
+
+    </FlyoutItem>
+
+    <MenuItem IconImageSource="view.png" Text="עזרה"  />
+</Shell>

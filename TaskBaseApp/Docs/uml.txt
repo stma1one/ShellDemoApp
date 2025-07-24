@@ -1,0 +1,57 @@
++-------------------+         +------------------+
+|      User         |         |  UrgencyLevel    |
++-------------------+         +------------------+
+| +UserId: int      |         | +UrgencyLevelId: int    |
+| +Username: string |         | +UrgencyLevelName: string |
+| +Password: string |         +------------------+
++-------------------+                     |
+        |                                  |
+        | 1                                | 1
+        |                                  |
+        |                                  |
+        |                                  |
+        v                                  v
++-------------------+         +------------------+
+|    UserTask       |<--------|                  |
++-------------------+         |                  |
+| +TaskId: int      |         |                  |
+| +TaskDescription: string    |                  |
+| +TaskDueDate: DateOnly      |                  |
+| +TaskActualDate: DateOnly?  |                  |
+| +TaskImage: string          |                  |
++-------------------+         +------------------+
+        |
+        | 1
+        |
+        | contains
+        | * composition
+        v
++-------------------+
+|   TaskComment     |
++-------------------+
+| +CommentId: int   |
+| +Comment: string  |
+| +CommentDate: DateOnly |
++-------------------+
+
++-------------------+        +-------------------+
+|  <<interface>>    |<..-----|     DBMokup       |
+|  ILoginService    |        +-------------------+
++-------------------+        | -users: List<User> |
+| +Login(...)        |        | -tasks: List<UserTask> |
+| +GetTasks(...)     |        | -comments: List<TaskComment> |
+| +AddTask(...)      |        | -urgencyLevels: List<UrgencyLevel> |
+| +DeleteTask(...)   |        | +Login(...)       |
+| +GetComments(...)  |        | +GetTasks(...)    |
+| +AddComment(...)   |        | +AddTask(...)     |
++-------------------+        | +DeleteTask(...)  |
+                             | +GetComments(...) |
+                             | +AddComment(...)  |
+                             +-------------------+
+                                  ^     ^     ^     ^
+                                  |     |     |     |
+                                  |     |     |     |
+                                  |     |     |     +--- uses ---> UrgencyLevel
+                                  |     |     +--------- uses ---> TaskComment
+                                  |     +--------------- uses ---> UserTask
+                                  +--------------------- uses ---> User
