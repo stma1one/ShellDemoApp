@@ -151,7 +151,7 @@ public class UserTasksPageViewModel:ViewModelBase
 		//שליחת פרמטר פשוט
 		//	await Shell.Current.GoToAsync(@$"TaskDetailsPage?id={SelectedTask.TaskId}&desc={SelectedTask.TaskDescription}");
 		Dictionary<string, object> param = new Dictionary<string, object>();
-		param.Add("selectedTask",SelectedTask.ToUserTask());
+		param.Add("selectedTask",SelectedTask!.ToUserTask());
 		await Shell.Current.GoToAsync("DetailsPage", param);
 
 
