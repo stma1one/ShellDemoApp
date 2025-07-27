@@ -9,8 +9,6 @@
     x:DataType="viewmodels:LoginPageViewModel"
     FlowDirection="RightToLeft"
     IsBusy="{Binding IsBusy}">
-   
-
 
     <!--  רקע דף  -->
     <ContentPage.Background>
