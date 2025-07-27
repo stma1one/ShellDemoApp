@@ -10,7 +10,8 @@
     FlowDirection="RightToLeft"
     IsBusy="{Binding IsBusy}">
 
-    <!--  רקע דף  -->
+
+    <!--  רקע דף
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
             <GradientStop Offset="0.0" Color="LightCyan" />
@@ -18,6 +19,7 @@
             <GradientStop Offset="1.0" Color="Purple" />
         </LinearGradientBrush>
     </ContentPage.Background>
+    -->
 
 
 
@@ -72,6 +74,7 @@
                     FontFamily="MaterialSymbols"
                     FontSize="24"
                     HorizontalOptions="End"
+                    Style="{StaticResource iconButton}"
                     Text="{Binding IsPassword, Converter={StaticResource passwordIconConvert}}"
                     TextColor="White"
                     VerticalOptions="Center" />

@@ -13,10 +13,6 @@
             HorizontalOptions="Center"
             Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" />
-        <Button
-            BorderWidth="3"
-            Command="{Binding GotoProfileCommand}"
-            Text="מסך פרופיל משתמש"
-            WidthRequest="100" />
+        <Button Command="{Binding GotoProfileCommand}" Text="מסך פרופיל משתמש" />
     </VerticalStackLayout>
 </ContentPage>
