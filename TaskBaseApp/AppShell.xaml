@@ -18,16 +18,15 @@
     </Shell.FlyoutFooter>
 
 
-    <FlyoutItem
-        Title="ראשי"
-        FlyoutDisplayOptions="AsMultipleItems">
+    <FlyoutItem Title="ראשי" FlyoutDisplayOptions="AsMultipleItems">
+
         <ShellContent
-            Title="Home"
-            ContentTemplate="{DataTemplate local:UserProfilePage}"
+            Title="הוסף משימה"
+            ContentTemplate="{DataTemplate local:AddTaskPage}"
             FlyoutItemIsVisible="{Binding IsAdmin}"
-            Icon="home.png"
+            Icon="add.png"
             IsVisible="{Binding IsAdmin}"
-            Route="TasksPage" />
+            Route="AddNewTaskPage" />
 
 
         <ShellContent
@@ -37,13 +36,7 @@
             Route="UserTaskPage" />
     </FlyoutItem>
 
-    <FlyoutItem>
-        <ShellContent
-            Title="הוסף משימה"
-            ContentTemplate="{DataTemplate local:AddTaskPage}"
-            Icon="add.png"
-            Route="AddNewTaskPage" />
-    </FlyoutItem>
+    <FlyoutItem />
 
     <MenuItem
         Command="{Binding LogoutCommand}"

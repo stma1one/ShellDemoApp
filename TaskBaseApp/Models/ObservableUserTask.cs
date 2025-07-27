@@ -94,17 +94,7 @@ namespace TaskBaseApp.Models
 
 		public UserTask ToUserTask()
 		{
-			return new UserTask
-			{
-				TaskId = this.TaskId,
-				User = this.User,
-				UrgencyLevel = this.UrgencyLevel,
-				TaskDescription = this.TaskDescription,
-				TaskDueDate = this.TaskDueDate,
-				TaskActualDate = this.TaskActualDate,
-				TaskComments = this.TaskComments.ToList(),
-				TaskImage = this.TaskImage
-			};
+			return task;
 		}
 	}
 }

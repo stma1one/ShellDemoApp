@@ -152,7 +152,7 @@ public class UserTasksPageViewModel:ViewModelBase
 		//	await Shell.Current.GoToAsync(@$"TaskDetailsPage?id={SelectedTask.TaskId}&desc={SelectedTask.TaskDescription}");
 		Dictionary<string, object> param = new Dictionary<string, object>();
 		param.Add("selectedTask",SelectedTask.ToUserTask());
-		await Shell.Current.GoToAsync("TaskDetailsPage", param);
+		await Shell.Current.GoToAsync("DetailsPage", param);
 
 
 	}

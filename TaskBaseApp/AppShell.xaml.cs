@@ -12,8 +12,8 @@ namespace TaskBaseApp
             InitializeComponent();
             BindingContext = vm;
             //רישום של דפים פנימיים
-            Routing.RegisterRoute("TaskDetailsPage",typeof(TaskDetailsPage));
-            Routing.RegisterRoute("UserProfilePage", typeof(UserProfilePage));
+            Routing.RegisterRoute("UserTaskPage/DetailsPage", typeof(TaskDetailsPage));
+            Routing.RegisterRoute("AddNewTaskPage/DetailsPage", typeof(UserProfilePage));
             
 		}
 		
