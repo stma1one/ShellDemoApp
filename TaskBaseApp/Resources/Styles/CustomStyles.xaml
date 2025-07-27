@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:TaskBaseApp.Views">
+    <Style x:Key="baseButton" TargetType="Button">
+        <Setter Property="BorderWidth" Value="3" />
+        <Setter Property="BorderColor" Value="Green" />
+        <Setter Property="WidthRequest" Value="100" />
+        <Setter Property="FontSize" Value="12" />
+
+    </Style>
+
+    <Style
+        x:Key="iconButton"
+        BasedOn="{StaticResource baseButton}"
+        TargetType="Button">
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark=White, Light=Black}" />
+    </Style>
+
+
+
+    <LinearGradientBrush x:Key="backgroundBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Offset="0.0" Color="LightCyan" />
+        <GradientStop Offset="0.5" Color="#3a7bd5" />
+        <GradientStop Offset="1.0" Color="Purple" />
+    </LinearGradientBrush>
+
+    <Style ApplyToDerivedTypes="True" TargetType="ContentPage">
+        <Setter Property="Background" Value="{StaticResource backgroundBrush}" />
+
+    </Style>
+    <Style ApplyToDerivedTypes="True" TargetType="Shell">
+        <Setter Property="BackgroundColor" Value="AliceBlue" />
+    </Style>
+</ResourceDictionary>

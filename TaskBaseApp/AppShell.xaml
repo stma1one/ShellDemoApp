@@ -18,14 +18,16 @@
     </Shell.FlyoutFooter>
 
 
-    <FlyoutItem Title="ראשי" FlyoutDisplayOptions="AsMultipleItems">
+    <FlyoutItem
+        Title="ראשי"
+        FlyoutDisplayOptions="AsMultipleItems"
+        Route="MainPage">
 
         <ShellContent
             Title="הוסף משימה"
             ContentTemplate="{DataTemplate local:AddTaskPage}"
             FlyoutItemIsVisible="{Binding IsAdmin}"
             Icon="add.png"
-            IsVisible="{Binding IsAdmin}"
             Route="AddNewTaskPage" />
 
 

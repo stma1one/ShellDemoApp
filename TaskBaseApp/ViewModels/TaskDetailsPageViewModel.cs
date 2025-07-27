@@ -14,8 +14,8 @@ namespace TaskBaseApp.ViewModels
 	/// מקבל אובייקט UserTask שלם דרך מנגנון הניווט של MAUI.
 	/// </summary>
 
-	//[QueryProperty(nameof(CommentsTitle),"desc")]
-	//[QueryProperty(nameof(Id),"id")]
+	[QueryProperty(nameof(CommentsTitle),"desc")]
+	[QueryProperty(nameof(Id),"id")]
 	[QueryProperty(nameof(SelectedTask), "selectedTask")]
 	public class TaskDetailsPageViewModel :ViewModelBase 
 
@@ -49,7 +49,7 @@ namespace TaskBaseApp.ViewModels
 		/// המאפיין שמקבל את אובייקט המשימה המלא מהניווט.
 		/// כאשר הוא מתעדכן, אנו מאתחלים את כל הדף.
 		/// </summary>
-		public UserTask SelectedTask
+		public UserTask? SelectedTask
 		{
 			get => _selectedTask;
 			set

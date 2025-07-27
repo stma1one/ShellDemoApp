@@ -107,22 +107,22 @@ public class LoginPageViewModel : ViewModelBase
 		}
 	}
 
-	private string? showPasswordIcon;
-	/// <summary>
-	/// האייקון שיוצג עבור כפתור הצג/הסתר סיסמה.
-	/// </summary>
-	public string? ShowPasswordIcon
-	{
-		get => showPasswordIcon;
-		set
-		{
-			if (showPasswordIcon != value)
-			{
-				showPasswordIcon = value;
-				OnPropertyChanged();
-			}
-		}
-	}
+	//private string? showPasswordIcon;
+	///// <summary>
+	///// האייקון שיוצג עבור כפתור הצג/הסתר סיסמה.
+	///// </summary>
+	//public string? ShowPasswordIcon
+	//{
+	//	get => showPasswordIcon;
+	//	set
+	//	{
+	//		if (showPasswordIcon != value)
+	//		{
+	//			showPasswordIcon = value;
+	//			OnPropertyChanged();
+	//		}
+	//	}
+	//}
 
 	private string? loginMessage;
 	/// <summary>
@@ -152,7 +152,7 @@ public class LoginPageViewModel : ViewModelBase
 		// אתחול הפקודות והגדרת ערכים ראשוניים
 		ShowPasswordCommand = new Command(TogglePasswordVisiblity);
 		LoginCommand = new Command(async()=>await Login(), CanLogin);
-		ShowPasswordIcon = FontHelper.CLOSED_EYE_ICON; // הגדרת אייקון ברירת מחדל
+		//ShowPasswordIcon = FontHelper.CLOSED_EYE_ICON; // הגדרת אייקון ברירת מחדל
 		IsPassword = true; // הגדרת שדה הסיסמה כמוסתר כברירת מחדל
 	}
 
@@ -187,10 +187,10 @@ public class LoginPageViewModel : ViewModelBase
 	private void TogglePasswordVisiblity()
 	{
 		IsPassword = !IsPassword; // הופך את הערך הבוליאני
-		if (IsPassword)
-			ShowPasswordIcon = FontHelper.CLOSED_EYE_ICON;
-		else
-			ShowPasswordIcon = FontHelper.OPEN_EYE_ICON;
+		//if (IsPassword)
+		//	ShowPasswordIcon = FontHelper.CLOSED_EYE_ICON;
+		//else
+		//	ShowPasswordIcon = FontHelper.OPEN_EYE_ICON;
 	}
 
 	/// <summary>
@@ -210,6 +210,7 @@ public class LoginPageViewModel : ViewModelBase
 			MessageColor = Colors.Green;
 			((App)Application.Current!).CurrentUser = db.GetCurrentUser(UserName!); // מאחסן את המשתמש הנוכחי באפליקציה
 			var shellVm = provider.GetService<AppShellViewModel>()!;                                                                    // כאן ניתן להוסיף ניווט לדף הבא
+		//דוגמה ליצירת SHELL אחר
 			if (UserName != "user2")
 			Application.Current.Windows[0].Page = new AppShell(shellVm);
 			else

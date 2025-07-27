@@ -17,7 +17,7 @@ public class UserTasksPageViewModel:ViewModelBase
 	ITaskServices _taskService;// Service for task management
 	List<UserTask> userTask=new(); // Represents a User task
 	Task loadData;// Represents a task for loading data
-	ObservableUserTask selectedTask;
+	ObservableUserTask? selectedTask;
 	ObservableCollection<ObservableUserTask> _allUserTasks=new(); // Collection of User tasks for binding to the UI
 	ObservableCollection<ObservableUserTask> _filteredUserTasks = new(); // Collection of completed User tasks for binding to the UI
 	bool _isLoading = false; // Indicates whether data is currently being loaded
@@ -151,8 +151,9 @@ public class UserTasksPageViewModel:ViewModelBase
 		//שליחת פרמטר פשוט
 		//	await Shell.Current.GoToAsync(@$"TaskDetailsPage?id={SelectedTask.TaskId}&desc={SelectedTask.TaskDescription}");
 		Dictionary<string, object> param = new Dictionary<string, object>();
-		param.Add("selectedTask",SelectedTask.ToUserTask());
+		param.Add("selectedTask",SelectedTask!.ToUserTask());
 		await Shell.Current.GoToAsync("DetailsPage", param);
+		
 
 
 	}
