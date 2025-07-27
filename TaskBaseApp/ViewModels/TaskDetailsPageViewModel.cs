@@ -14,8 +14,8 @@ namespace TaskBaseApp.ViewModels
 	/// מקבל אובייקט UserTask שלם דרך מנגנון הניווט של MAUI.
 	/// </summary>
 
-	//[QueryProperty(nameof(CommentsTitle),"desc")]
-	//[QueryProperty(nameof(Id),"id")]
+	[QueryProperty(nameof(CommentsTitle),"desc")]
+	[QueryProperty(nameof(Id),"id")]
 	[QueryProperty(nameof(SelectedTask), "selectedTask")]
 	public class TaskDetailsPageViewModel :ViewModelBase 
 

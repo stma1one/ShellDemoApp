@@ -22,7 +22,7 @@
                     Command="{Binding ClearFilterCommand}"
                     FontFamily="MaterialSymbols"
                     FontSize="25"
-                    Text="&#xeb32;"
+                    Text="{StaticResource IconFilter_alt_off}"
                     TextColor="BlueViolet" />
             </HorizontalStackLayout>
         </Border>
@@ -35,7 +35,6 @@
                 ItemsSource="{Binding Tasks}"
                 SelectedItem="{Binding SelectedTask}"
                 SelectionChangedCommand="{Binding ShowDetailsPageCommand}"
-                
                 SelectionMode="Single">
                 <CollectionView.Header>
                     <StackLayout>
@@ -76,9 +75,9 @@
                                     Text="מחיקה">
                                     <!--  שימוש בICONS  -->
                                     <SwipeItem.IconImageSource>
-                                        <FontImageSource>
+                                        <FontImageSource Glyph="{StaticResource IconDelete}">
                                             <FontImageSource.FontFamily>MaterialSymbols</FontImageSource.FontFamily>
-                                            <FontImageSource.Glyph>&#xe872;</FontImageSource.Glyph>
+
                                         </FontImageSource>
                                     </SwipeItem.IconImageSource>
                                 </SwipeItem>

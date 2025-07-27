@@ -72,7 +72,7 @@
                     FontFamily="MaterialSymbols"
                     FontSize="24"
                     HorizontalOptions="End"
-                    Text="{Binding ShowPasswordIcon}"
+                    Text="{Binding IsPassword, Converter={StaticResource passwordIconConvert}}"
                     TextColor="White"
                     VerticalOptions="Center" />
             </Grid>
