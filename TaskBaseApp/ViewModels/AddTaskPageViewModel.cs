@@ -1,4 +1,7 @@
-﻿using System;
+
+﻿using Microsoft.Extensions.Options;
+using System;
+
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TaskBaseApp.Models;
@@ -12,17 +15,19 @@ namespace TaskBaseApp.ViewModels
 	public class AddTaskPageViewModel : ViewModelBase
 	{
 		// שדה פרטי לתיאור המשימה
-		private string? _taskDescription;
+		private string? _taskDescription=string.Empty;
 		// שדה פרטי לתאריך יעד
 		private DateTime? _taskDueDate;
 		// הודעת שגיאה עבור תיאור המשימה
 		private string _taskDescriptionError = string.Empty;
 		// הודעת שגיאה עבור תאריך יעד
 		private string _taskDueDateError = string.Empty;
-		// האם להציג שגיאה עבור תיאור המשימה
-		private bool _isTaskDescriptionErrorVisible;
-		// האם להציג שגיאה עבור תאריך יעד
-		private bool _isTaskDueDateErrorVisible;
+		
+		/// רמת הדחיפות שנבחרה על ידי המשתמש.
+		private UrgencyLevel? selectedUrgency;
+
+		// הודעת שגיאה עבור רמת דחיפות
+		private string _taskUrgencyError;
 
 		/// רמת הדחיפות שנבחרה על ידי המשתמש.
 		private UrgencyLevel? selectedUrgency;
@@ -38,9 +43,8 @@ namespace TaskBaseApp.ViewModels
 				if (_taskDescription != value)
 				{
 					_taskDescription = value;
-					ValidateTaskDescription(); // ולידציה לשדה
-					(SaveTaskCommand as Command)?.ChangeCanExecute(); // עדכון מצב הכפתור
 					OnPropertyChanged();
+					(SaveTaskCommand as Command)?.ChangeCanExecute(); // עדכון מצב הכפתור
 				}
 			}
 		}
@@ -56,9 +60,9 @@ namespace TaskBaseApp.ViewModels
 				if (_taskDueDate != value)
 				{
 					_taskDueDate = value;
-					ValidateTaskDueDate(); // ולידציה לשדה
-					(SaveTaskCommand as Command)?.ChangeCanExecute(); // עדכון מצב הכפתור
+
 					OnPropertyChanged();
+					(SaveTaskCommand as Command)?.ChangeCanExecute(); // עדכון מצב הכפתור
 				}
 			}
 		}
@@ -84,15 +88,7 @@ namespace TaskBaseApp.ViewModels
 		/// </summary>
 		public bool IsTaskDescriptionErrorVisible
 		{
-			get => _isTaskDescriptionErrorVisible;
-			set
-			{
-				if (_isTaskDescriptionErrorVisible != value)
-				{
-					_isTaskDescriptionErrorVisible = value;
-					OnPropertyChanged();
-				}
-			}
+			get =>  ValidateTaskDescription();
 		}
 
 		/// <summary>
@@ -116,12 +112,51 @@ namespace TaskBaseApp.ViewModels
 		/// </summary>
 		public bool IsTaskDueDateErrorVisible
 		{
-			get => _isTaskDueDateErrorVisible;
+			get => ValidateTaskDueDate();
+		}
+		/// <summary>
+		/// האם להציג את הודעת השגיאה עבור רמת דחיפות.
+		/// </summary>
+		public bool IsTaskUrgencyErrorVisible
+		{
+			get=>ValidateTaskUrgencyLevel();
+			
+		}
+
+		/// <summary>
+		/// רמת הדחיפות שנבחרה על ידי המשתמש.
+		/// </summary>
+		public UrgencyLevel? SelectedUrgency
+		{
+			get => selectedUrgency;
 			set
 			{
-				if (_isTaskDueDateErrorVisible != value)
+				if (selectedUrgency != value)
 				{
-					_isTaskDueDateErrorVisible = value;
+					selectedUrgency = value;
+					OnPropertyChanged();
+					(SaveTaskCommand as Command)?.ChangeCanExecute(); // עדכון מצב הכפת
+				}
+			}
+		}
+
+		/// <summary>
+		/// אוסף רמות הדחיפות הזמינות לבחירה.
+		/// </summary>
+		public ObservableCollection<UrgencyLevel> UrgencyLevels
+		{
+			get; set;
+		}
+		/// <summary>
+		/// הודעת שגיאה עבור רמת דחיפות.
+		/// </summary>
+		public string TaskUrgencyError
+		{
+			get=> _taskUrgencyError;
+			 set{
+				if(_taskUrgencyError != value)
+				{
+					_taskUrgencyError = value;
 					OnPropertyChanged();
 				}
 			}
@@ -175,6 +210,7 @@ namespace TaskBaseApp.ViewModels
 			SaveTaskCommand = new Command(async () => await SaveTask(), CanSaveTask);
 			GotoProfileCommand = new Command(async () => await Shell.Current.GoToAsync("/DetailsPage"));
 			TaskDueDate = DateTime.Today; // ערך ברירת מחדל
+
 			UrgencyLevels = new ()
 		{
 			new UrgencyLevel { UrgencyLevelId = 1,  UrgencyLevelName = "נמוכה" },
@@ -186,35 +222,51 @@ namespace TaskBaseApp.ViewModels
 		/// <summary>
 		/// ולידציה לשדה תיאור המשימה.
 		/// </summary>
-		private void ValidateTaskDescription()
+		private bool ValidateTaskDescription()
 		{
 			if (string.IsNullOrWhiteSpace(TaskDescription))
 			{
 				TaskDescriptionError = "שדה תיאור משימה חובה";
-				IsTaskDescriptionErrorVisible = true;
+				
+				return false;
 			}
-			else
-			{
+			
 				TaskDescriptionError = string.Empty;
-				IsTaskDescriptionErrorVisible = false;
-			}
+				
+			return true;
 		}
 
 		/// <summary>
 		/// ולידציה לשדה תאריך יעד.
 		/// </summary>
-		private void ValidateTaskDueDate()
+		private bool ValidateTaskDueDate()
 		{
 			if (TaskDueDate == null)
 			{
 				TaskDueDateError = "יש לבחור תאריך יעד";
-				IsTaskDueDateErrorVisible = true;
+				
+				return false;
 			}
-			else
-			{
+			
 				TaskDueDateError = string.Empty;
-				IsTaskDueDateErrorVisible = false;
+				
+				return true;
+			
+		}
+
+		private bool ValidateTaskUrgencyLevel()
+		{
+			if (SelectedUrgency == null)
+			{
+				TaskUrgencyError = "יש לבחור רמת דחיפות";
+				
+				return false;
 			}
+			
+				TaskUrgencyError = string.Empty;
+				
+				return true;
+
 		}
 
 		/// <summary>
@@ -222,7 +274,10 @@ namespace TaskBaseApp.ViewModels
 		/// </summary>
 		private bool CanSaveTask()
 		{
-			return !string.IsNullOrWhiteSpace(TaskDescription) && TaskDueDate != null;
+			OnPropertyChanged(nameof(IsTaskDescriptionErrorVisible));
+			OnPropertyChanged(nameof(IsTaskDueDateErrorVisible));
+			OnPropertyChanged(nameof(IsTaskUrgencyErrorVisible));
+			return  ValidateTaskDescription()&& ValidateTaskDueDate() && ValidateTaskUrgencyLevel();
 		}
 
 		/// <summary>
@@ -234,7 +289,8 @@ namespace TaskBaseApp.ViewModels
 			// שמור את המשימה כאן
 			await Task.Delay(2000);
 			IsBusy = false;
-			
+
+
 		}
 	}
 }

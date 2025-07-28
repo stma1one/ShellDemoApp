@@ -3,10 +3,21 @@
     x:Class="TaskBaseApp.Views.AddTaskPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+
+    xmlns:converters="clr-namespace:TaskBaseApp.Converters"
+
     xmlns:models="clr-namespace:TaskBaseApp.Models"
     xmlns:viewmodels="clr-namespace:TaskBaseApp.ViewModels"
     Title="הוספת משימה"
     x:DataType="viewmodels:AddTaskPageViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="inverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
 
     <Grid>
         <VerticalStackLayout Padding="24" Spacing="16">
@@ -21,21 +32,31 @@
             <Label Text="תיאור משימה:" />
             <Entry Placeholder="הכנס תיאור משימה" Text="{Binding TaskDescription}" />
             <Label
-                IsVisible="{Binding IsTaskDescriptionErrorVisible}"
+
+                IsVisible="{Binding IsTaskDescriptionErrorVisible, Converter={StaticResource inverseBoolConverter}, Mode=OneWay}"
+
                 Text="{Binding TaskDescriptionError}"
                 TextColor="Red" />
 
             <Label Text="תאריך יעד:" />
             <DatePicker Date="{Binding TaskDueDate}" />
             <Label
-                IsVisible="{Binding IsTaskDueDateErrorVisible}"
+
+                IsVisible="{Binding IsTaskDueDateErrorVisible, Converter={StaticResource inverseBoolConverter}, Mode=OneWay}"
+
                 Text="{Binding TaskDueDateError}"
                 TextColor="Red" />
             <Label Text="רמת דחיפות:" />
             <Picker
                 ItemDisplayBinding="{Binding UrgencyLevelName, x:DataType='models:UrgencyLevel'}"
                 ItemsSource="{Binding UrgencyLevels}"
-                SelectedItem="{Binding SelectedUrgency}" />
+
+                SelectedItem="{Binding SelectedUrgency, Mode=TwoWay}" />
+            <Label
+                IsVisible="{Binding IsTaskUrgencyErrorVisible, Converter={StaticResource inverseBoolConverter}, Mode=OneWay}"
+                Text="{Binding TaskUrgencyError}"
+                TextColor="Red" />
+
             <Button
                 x:Name="SaveTaskButton"
                 Command="{Binding SaveTaskCommand}"
@@ -47,46 +68,7 @@
                 Text="מסך פרופיל משתמש" />
         </VerticalStackLayout>
 
-        <!--  Loading screen  -->
-        <Grid
-            HorizontalOptions="Fill"
-            IsVisible="{Binding IsBusy}"
-            VerticalOptions="Fill">
-            <BoxView
-                BackgroundColor="{StaticResource Gray100}"
-                HorizontalOptions="Fill"
-                Opacity="0.8"
-                VerticalOptions="Fill" />
 
-            <Border
-                Margin="20"
-                Padding="20"
-                BackgroundColor="{StaticResource Card}"
-                HorizontalOptions="Center"
-                Style="{StaticResource CardBorder}"
-                VerticalOptions="Center">
-                <VerticalStackLayout
-                    HeightRequest="200"
-                    VerticalOptions="Fill"
-                    WidthRequest="200">
-                    <ActivityIndicator
-                        HeightRequest="100"
-                        HorizontalOptions="Center"
-                        IsEnabled="{Binding IsBusy}"
-                        IsRunning="{Binding IsBusy}"
-                        VerticalOptions="Center"
-                        WidthRequest="100"
-                        Color="{StaticResource Amber600}" />
-                    <Label
-                        FontAttributes="Bold"
-                        FontFamily="ArialBold"
-                        FontSize="Medium"
-                        HorizontalOptions="Center"
-                        Text="מוסיף משימה ..."
-                        TextColor="{StaticResource Amber900}"
-                        VerticalOptions="Center" />
-                </VerticalStackLayout>
-            </Border>
-        </Grid>
+    
     </Grid>
 </ContentPage>
