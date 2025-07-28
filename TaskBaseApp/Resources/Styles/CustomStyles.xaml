@@ -30,6 +30,7 @@
 
     <Style ApplyToDerivedTypes="True" TargetType="ContentPage">
         <Setter Property="Background" Value="{StaticResource backgroundBrush}" />
+        <Setter Property="FlowDirection" Value="RightToLeft" />
 
     </Style>
     <Style ApplyToDerivedTypes="True" TargetType="Shell">
