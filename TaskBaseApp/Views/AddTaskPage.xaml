@@ -6,6 +6,7 @@
     xmlns:viewmodels="clr-namespace:TaskBaseApp.ViewModels"
     xmlns:models="clr-namespace:TaskBaseApp.Models"
     Title="AddTaskPage"
+    Title="הוספת משימה"
     x:DataType="viewmodels:AddTaskPageViewModel">
 
 
