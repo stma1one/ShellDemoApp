@@ -1,24 +1,202 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace TaskBaseApp.ViewModels
 {
-	public class AddTaskPageViewModel:ViewModelBase
+	/// <summary>
+	/// ViewModel עבור דף הוספת משימה.
+	/// מנהל את הלוגיקה, הוולידציה והמצב של הדף.
+	/// </summary>
+	public class AddTaskPageViewModel : ViewModelBase
 	{
+		// שדה פרטי לתיאור המשימה
+		private string? _taskDescription;
+		// שדה פרטי לתאריך יעד
+		private DateTime? _taskDueDate;
+		// הודעת שגיאה עבור תיאור המשימה
+		private string _taskDescriptionError = string.Empty;
+		// הודעת שגיאה עבור תאריך יעד
+		private string _taskDueDateError = string.Empty;
+		// האם להציג שגיאה עבור תיאור המשימה
+		private bool _isTaskDescriptionErrorVisible;
+		// האם להציג שגיאה עבור תאריך יעד
+		private bool _isTaskDueDateErrorVisible;
+
+		/// <summary>
+		/// תיאור המשימה שהמשתמש מזין.
+		/// </summary>
+		public string? TaskDescription
+		{
+			get => _taskDescription;
+			set
+			{
+				if (_taskDescription != value)
+				{
+					_taskDescription = value;
+					ValidateTaskDescription(); // ולידציה לשדה
+					(SaveTaskCommand as Command)?.ChangeCanExecute(); // עדכון מצב הכפתור
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
+		/// תאריך יעד שהמשתמש בוחר.
+		/// </summary>
+		public DateTime? TaskDueDate
+		{
+			get => _taskDueDate;
+			set
+			{
+				if (_taskDueDate != value)
+				{
+					_taskDueDate = value;
+					ValidateTaskDueDate(); // ולידציה לשדה
+					(SaveTaskCommand as Command)?.ChangeCanExecute(); // עדכון מצב הכפתור
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
+		/// הודעת שגיאה עבור תיאור המשימה.
+		/// </summary>
+		public string TaskDescriptionError
+		{
+			get => _taskDescriptionError;
+			set
+			{
+				if (_taskDescriptionError != value)
+				{
+					_taskDescriptionError = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
+		/// האם להציג את הודעת השגיאה עבור תיאור המשימה.
+		/// </summary>
+		public bool IsTaskDescriptionErrorVisible
+		{
+			get => _isTaskDescriptionErrorVisible;
+			set
+			{
+				if (_isTaskDescriptionErrorVisible != value)
+				{
+					_isTaskDescriptionErrorVisible = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
+		/// הודעת שגיאה עבור תאריך יעד.
+		/// </summary>
+		public string TaskDueDateError
+		{
+			get => _taskDueDateError;
+			set
+			{
+				if (_taskDueDateError != value)
+				{
+					_taskDueDateError = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
+		/// האם להציג את הודעת השגיאה עבור תאריך יעד.
+		/// </summary>
+		public bool IsTaskDueDateErrorVisible
+		{
+			get => _isTaskDueDateErrorVisible;
+			set
+			{
+				if (_isTaskDueDateErrorVisible != value)
+				{
+					_isTaskDueDateErrorVisible = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
+		/// פקודה לשמירת המשימה.
+		/// הכפתור יהיה פעיל רק כאשר כל השדות תקינים.
+		/// </summary>
+		public ICommand SaveTaskCommand
+		{
+			get;
+		}
+
+		/// <summary>
+		/// פקודה למעבר לדף פרופיל המשתמש.
+		/// </summary>
 		public ICommand GotoProfileCommand
 		{
 			get;
 		}
+
+		/// <summary>
+		/// בנאי של ה-ViewModel.
+		/// </summary>
 		public AddTaskPageViewModel()
 		{
+			SaveTaskCommand = new Command(SaveTask, CanSaveTask);
 			GotoProfileCommand = new Command(async () => await Shell.Current.GoToAsync("/DetailsPage"));
-			// Initialize properties or commands here if needed
+			TaskDueDate = DateTime.Today; // ערך ברירת מחדל
 		}
-		// Add properties, commands, and methods for the AddTaskPage functionality
+
+		/// <summary>
+		/// ולידציה לשדה תיאור המשימה.
+		/// </summary>
+		private void ValidateTaskDescription()
+		{
+			if (string.IsNullOrWhiteSpace(TaskDescription))
+			{
+				TaskDescriptionError = "שדה תיאור משימה חובה";
+				IsTaskDescriptionErrorVisible = true;
+			}
+			else
+			{
+				TaskDescriptionError = string.Empty;
+				IsTaskDescriptionErrorVisible = false;
+			}
+		}
+
+		/// <summary>
+		/// ולידציה לשדה תאריך יעד.
+		/// </summary>
+		private void ValidateTaskDueDate()
+		{
+			if (TaskDueDate == null)
+			{
+				TaskDueDateError = "יש לבחור תאריך יעד";
+				IsTaskDueDateErrorVisible = true;
+			}
+			else
+			{
+				TaskDueDateError = string.Empty;
+				IsTaskDueDateErrorVisible = false;
+			}
+		}
+
+		/// <summary>
+		/// בודק אם ניתן לשמור את המשימה (כל השדות תקינים).
+		/// </summary>
+		private bool CanSaveTask()
+		{
+			return !string.IsNullOrWhiteSpace(TaskDescription) && TaskDueDate != null;
+		}
+
+		/// <summary>
+		/// פעולה לשמירת המשימה.
+		/// </summary>
+		private void SaveTask()
+		{
+			// שמור את המשימה כאן
+		}
 	}
-	
 }

@@ -59,13 +59,10 @@
                 ColumnDefinitions="*,Auto"
                 VerticalOptions="Center">
                 <Entry
-                    BackgroundColor="Transparent"
-                    FontSize="18"
                     IsPassword="{Binding IsPassword}"
                     Placeholder="סיסמה"
-                    Text="{Binding Password}"
-                    TextColor="Wheat"
-                    VerticalOptions="Center" />
+                    Style="{StaticResource passwordEntryStyle}"
+                    Text="{Binding Password}" />
                 <Button
                     Margin="5,0,0,0"
                     Padding="0"
@@ -74,7 +71,6 @@
                     FontFamily="MaterialSymbols"
                     FontSize="24"
                     HorizontalOptions="End"
-                    Style="{StaticResource iconButton}"
                     Text="{Binding IsPassword, Converter={StaticResource passwordIconConvert}}"
                     TextColor="White"
                     VerticalOptions="Center" />
