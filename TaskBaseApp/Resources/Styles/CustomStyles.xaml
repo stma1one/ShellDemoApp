@@ -35,4 +35,21 @@
     <Style ApplyToDerivedTypes="True" TargetType="Shell">
         <Setter Property="BackgroundColor" Value="AliceBlue" />
     </Style>
+
+    <Style x:Key="CardBorder" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+        <Setter Property="Stroke" Value="{StaticResource Amber200}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Card}" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow
+                    Brush="{StaticResource Gray400}"
+                    Opacity="0.1"
+                    Radius="2"
+                    Offset="0,2" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Color x:Key="Card">#FFFFFFFF</Color>
 </ResourceDictionary>

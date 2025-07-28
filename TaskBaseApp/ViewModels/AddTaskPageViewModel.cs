@@ -1,5 +1,7 @@
+
 ﻿using Microsoft.Extensions.Options;
 using System;
+
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TaskBaseApp.Models;
@@ -26,6 +28,9 @@ namespace TaskBaseApp.ViewModels
 
 		// הודעת שגיאה עבור רמת דחיפות
 		private string _taskUrgencyError;
+
+		/// רמת הדחיפות שנבחרה על ידי המשתמש.
+		private UrgencyLevel? selectedUrgency;
 
 		/// <summary>
 		/// תיאור המשימה שהמשתמש מזין.
@@ -158,6 +163,29 @@ namespace TaskBaseApp.ViewModels
 		}
 
 		/// <summary>
+		/// רמת הדחיפות שנבחרה על ידי המשתמש.
+		/// </summary>
+		public UrgencyLevel? SelectedUrgency
+		{
+			get => selectedUrgency;
+			set
+			{
+				if (selectedUrgency != value)
+				{
+					selectedUrgency = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
+		/// אוסף רמות הדחיפות הזמינות לבחירה.
+		/// </summary>
+		public ObservableCollection<UrgencyLevel> UrgencyLevels {
+			get; init;
+		} 
+
+		/// <summary>
 		/// פקודה לשמירת המשימה.
 		/// הכפתור יהיה פעיל רק כאשר כל השדות תקינים.
 		/// </summary>
@@ -182,7 +210,8 @@ namespace TaskBaseApp.ViewModels
 			SaveTaskCommand = new Command(async () => await SaveTask(), CanSaveTask);
 			GotoProfileCommand = new Command(async () => await Shell.Current.GoToAsync("/DetailsPage"));
 			TaskDueDate = DateTime.Today; // ערך ברירת מחדל
-			UrgencyLevels = new()
+
+			UrgencyLevels = new ()
 		{
 			new UrgencyLevel { UrgencyLevelId = 1,  UrgencyLevelName = "נמוכה" },
 			new UrgencyLevel { UrgencyLevelId = 2,  UrgencyLevelName = "בינונית" },
@@ -260,6 +289,7 @@ namespace TaskBaseApp.ViewModels
 			// שמור את המשימה כאן
 			await Task.Delay(2000);
 			IsBusy = false;
+
 
 		}
 	}
