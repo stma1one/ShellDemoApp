@@ -27,10 +27,7 @@ namespace TaskBaseApp.ViewModels
 		private UrgencyLevel? selectedUrgency;
 
 		// הודעת שגיאה עבור רמת דחיפות
-		private string _taskUrgencyError;
-
-		/// רמת הדחיפות שנבחרה על ידי המשתמש.
-		private UrgencyLevel? selectedUrgency;
+		private string _taskUrgencyError=string.Empty;
 
 		/// <summary>
 		/// תיאור המשימה שהמשתמש מזין.
@@ -162,29 +159,7 @@ namespace TaskBaseApp.ViewModels
 			}
 		}
 
-		/// <summary>
-		/// רמת הדחיפות שנבחרה על ידי המשתמש.
-		/// </summary>
-		public UrgencyLevel? SelectedUrgency
-		{
-			get => selectedUrgency;
-			set
-			{
-				if (selectedUrgency != value)
-				{
-					selectedUrgency = value;
-					OnPropertyChanged();
-				}
-			}
-		}
-
-		/// <summary>
-		/// אוסף רמות הדחיפות הזמינות לבחירה.
-		/// </summary>
-		public ObservableCollection<UrgencyLevel> UrgencyLevels {
-			get; init;
-		} 
-
+		
 		/// <summary>
 		/// פקודה לשמירת המשימה.
 		/// הכפתור יהיה פעיל רק כאשר כל השדות תקינים.
