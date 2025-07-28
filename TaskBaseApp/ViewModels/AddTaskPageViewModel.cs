@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
+using TaskBaseApp.Models;
 
 namespace TaskBaseApp.ViewModels
 {
@@ -21,6 +23,9 @@ namespace TaskBaseApp.ViewModels
 		private bool _isTaskDescriptionErrorVisible;
 		// האם להציג שגיאה עבור תאריך יעד
 		private bool _isTaskDueDateErrorVisible;
+
+		/// רמת הדחיפות שנבחרה על ידי המשתמש.
+		private UrgencyLevel? selectedUrgency;
 
 		/// <summary>
 		/// תיאור המשימה שהמשתמש מזין.
@@ -123,6 +128,29 @@ namespace TaskBaseApp.ViewModels
 		}
 
 		/// <summary>
+		/// רמת הדחיפות שנבחרה על ידי המשתמש.
+		/// </summary>
+		public UrgencyLevel? SelectedUrgency
+		{
+			get => selectedUrgency;
+			set
+			{
+				if (selectedUrgency != value)
+				{
+					selectedUrgency = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
+		/// אוסף רמות הדחיפות הזמינות לבחירה.
+		/// </summary>
+		public ObservableCollection<UrgencyLevel> UrgencyLevels {
+			get; init;
+		} 
+
+		/// <summary>
 		/// פקודה לשמירת המשימה.
 		/// הכפתור יהיה פעיל רק כאשר כל השדות תקינים.
 		/// </summary>
@@ -144,9 +172,15 @@ namespace TaskBaseApp.ViewModels
 		/// </summary>
 		public AddTaskPageViewModel()
 		{
-			SaveTaskCommand = new Command(SaveTask, CanSaveTask);
+			SaveTaskCommand = new Command(async () => await SaveTask(), CanSaveTask);
 			GotoProfileCommand = new Command(async () => await Shell.Current.GoToAsync("/DetailsPage"));
 			TaskDueDate = DateTime.Today; // ערך ברירת מחדל
+			UrgencyLevels = new ()
+		{
+			new UrgencyLevel { UrgencyLevelId = 1,  UrgencyLevelName = "נמוכה" },
+			new UrgencyLevel { UrgencyLevelId = 2,  UrgencyLevelName = "בינונית" },
+			new UrgencyLevel { UrgencyLevelId = 3, UrgencyLevelName = "גבוהה" }
+		};
 		}
 
 		/// <summary>
@@ -194,9 +228,13 @@ namespace TaskBaseApp.ViewModels
 		/// <summary>
 		/// פעולה לשמירת המשימה.
 		/// </summary>
-		private void SaveTask()
+		private async Task SaveTask()
 		{
+			IsBusy = true;
 			// שמור את המשימה כאן
+			await Task.Delay(2000);
+			IsBusy = false;
+			
 		}
 	}
 }

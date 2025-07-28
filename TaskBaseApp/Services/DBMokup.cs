@@ -151,7 +151,7 @@ public class DBMokup : ITaskServices
 	public async Task<List<UserTask>> GetTasks(int userId)
 	{
 		await Task.Delay(1000); // סימול של עיכוב בטעינת הנתונים (כמו קריאה לבסיס נתונים)
-		return this.tasks.Where(x => x.User.UserId == userId).Select(x=> new UserTask
+		return this.tasks.Where(x => x?.User?.UserId == userId).Select(x=> new UserTask
 		{
 			TaskId = x.TaskId,
 			User = x.User,
