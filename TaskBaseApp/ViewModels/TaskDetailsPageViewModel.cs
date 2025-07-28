@@ -16,8 +16,8 @@ namespace TaskBaseApp.ViewModels
 
 	[QueryProperty(nameof(CommentsTitle),"desc")]
 	[QueryProperty(nameof(Id),"id")]
-	[QueryProperty(nameof(SelectedTask), "selectedTask")]
-	public class TaskDetailsPageViewModel :ViewModelBase 
+	//[QueryProperty(nameof(SelectedTask), "selectedTask")]
+	public class TaskDetailsPageViewModel :ViewModelBase ,IQueryAttributable
 
 	{
 		#region שדות
@@ -119,10 +119,10 @@ namespace TaskBaseApp.ViewModels
 			}
 		}
 
-		//public void ApplyQueryAttributes(IDictionary<string, object> query)
-		//{
-		//	CurrentTask = (UserTask)query["selectedTask"];
-		//}
+		public void ApplyQueryAttributes(IDictionary<string, object> query)
+		{
+			SelectedTask = (UserTask)query["selectedTask"];
+		}
 		#endregion
 	}
 }
