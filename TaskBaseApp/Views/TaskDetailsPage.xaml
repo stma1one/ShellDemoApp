@@ -34,7 +34,14 @@
                 <Image
                     Aspect="AspectFill"
                     HeightRequest="200"
-                    Source="{Binding CurrentTask.TaskImage, TargetNullValue='dotnet_bot.png'}" />
+                    Source="{Binding CurrentTask.TaskImage, TargetNullValue='dotnet_bot.png'}">
+                    <!--  הוספת Tap Gesture  -->
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Buttons="Primary" Command="{Binding UpdateImageCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+
             </Border>
 
             <!--  תיאור המשימה  -->

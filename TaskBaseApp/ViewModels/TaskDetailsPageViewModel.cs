@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TaskBaseApp.Models;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace TaskBaseApp.ViewModels
 {
@@ -91,12 +92,23 @@ namespace TaskBaseApp.ViewModels
 		}
 		#endregion
 
+		#region פקודות
+		/// <summary>
+		///		
+		///</summary>
+		public ICommand UpdateImageCommand
+		{
+			get;
+		}
+		#endregion
+
 		#region קונסטרוקטור (בנאי)
 		/// <summary>
 		/// בנאי. במצב קריאה בלבד, אין צורך להזריק שירותים או לאתחל פקודות.
 		/// </summary>
 		public TaskDetailsPageViewModel()
 		{
+			UpdateImageCommand=new Command(async ()=>await Shell.Current.DisplayAlert("עדכון תמונה", "המשימה עודכנה בהצלחה!", "אישור"));
 		}
 		#endregion
 
