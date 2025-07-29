@@ -42,7 +42,7 @@
                 TextColor="Red" />
             <Label Text="רמת דחיפות:" />
             <Picker
-                ItemDisplayBinding="{Binding UrgencyLevelName}"
+                ItemDisplayBinding="{Binding UrgencyLevelName, x:DataType='models:UrgencyLevel'}"
                 ItemsSource="{Binding UrgencyLevels}"
                 SelectedItem="{Binding SelectedUrgency, Mode=TwoWay}" />
             <Label

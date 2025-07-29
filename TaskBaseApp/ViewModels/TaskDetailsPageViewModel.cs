@@ -18,7 +18,7 @@ namespace TaskBaseApp.ViewModels
 	[QueryProperty(nameof(CommentsTitle),"desc")]
 	[QueryProperty(nameof(Id),"id")]
 	//[QueryProperty(nameof(SelectedTask), "selectedTask")]
-	public class TaskDetailsPageViewModel :ViewModelBase ,IQueryAttributable
+	public partial class TaskDetailsPageViewModel :ViewModelBase ,IQueryAttributable
 
 	{
 		#region שדות

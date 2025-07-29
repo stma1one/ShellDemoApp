@@ -12,7 +12,7 @@ namespace TaskBaseApp.ViewModels
 	/// ViewModel עבור דף הוספת משימה.
 	/// מנהל את הלוגיקה, הוולידציה והמצב של הדף.
 	/// </summary>
-	public class AddTaskPageViewModel : ViewModelBase
+	public partial class AddTaskPageViewModel : ViewModelBase
 	{
 		// שדה פרטי לתיאור המשימה
 		private string? _taskDescription=string.Empty;
@@ -190,12 +190,12 @@ namespace TaskBaseApp.ViewModels
 			GotoProfileCommand = new Command(async () => await Shell.Current.GoToAsync("/DetailsPage"));
 			TaskDueDate = DateTime.Today; // ערך ברירת מחדל
 
-			UrgencyLevels = new ()
-		{
+			UrgencyLevels = [
+
 			new UrgencyLevel { UrgencyLevelId = 1,  UrgencyLevelName = "נמוכה" },
 			new UrgencyLevel { UrgencyLevelId = 2,  UrgencyLevelName = "בינונית" },
 			new UrgencyLevel { UrgencyLevelId = 3, UrgencyLevelName = "גבוהה" }
-		};
+		];
 		}
 
 		/// <summary>
