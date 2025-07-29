@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TaskBaseApp.Models;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace TaskBaseApp.ViewModels
 {
@@ -90,14 +91,21 @@ namespace TaskBaseApp.ViewModels
 			}
 		}
 		#endregion
-
+		#region פקודות
+		ICommand GoToWorkCommand
+		{
+			get;
+		}
+		#endregion
 		#region קונסטרוקטור (בנאי)
 		/// <summary>
 		/// בנאי. במצב קריאה בלבד, אין צורך להזריק שירותים או לאתחל פקודות.
 		/// </summary>
 		public TaskDetailsPageViewModel()
 		{
+			GoToWorkCommand = new Command(async () => await OpenNavigationApp());
 		}
+
 		#endregion
 
 		#region מתודות פרטיות
@@ -105,9 +113,13 @@ namespace TaskBaseApp.ViewModels
 		/// מתודה פרטית שמעדכנת את המאפיינים הקשורים לתגובות
 		/// על סמך המשימה הנוכחית.
 		/// </summary>
+		private async Task OpenNavigationApp()
+		{
+			throw new NotImplementedException();
+		}
 		private void UpdateCommentStatus()
 		{
-			if (CurrentTask != null && CurrentTask.TaskComments.Any())
+			if (CurrentTask != null && CurrentTask.TaskComments.Count>0)
 			{
 				HasComments = true;
 				CommentsTitle = $"תגובות ({CurrentTask.TaskComments.Count})";

@@ -63,12 +63,11 @@
                 Stroke="#ccc"
                 StrokeShape="RoundRectangle 8"
                 StrokeThickness="1">
-                <Grid ColumnDefinitions="*,Auto" RowSpacing="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                <Grid
+                    ColumnDefinitions="*,Auto"
+                    RowDefinitions="auto,auto,auto,auto"
+                    RowSpacing="10">
+
 
                     <!--  שורה 1: משתמש משויך  -->
                     <Label
@@ -124,6 +123,11 @@
                         Text="{Binding CurrentTask.UrgencyLevel.UrgencyLevelName}"
                         TextColor="Wheat"
                         VerticalOptions="Center" />
+                    <!--  שורה 4  סע לעבודה  -->
+                    <Button
+                        Grid.Row="3"
+                        Command="{Binding GoToWorkCommand}"
+                        Text="סע לעבודה" />
                 </Grid>
             </Border>
 
