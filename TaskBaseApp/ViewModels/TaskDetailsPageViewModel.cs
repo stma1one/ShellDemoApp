@@ -92,7 +92,7 @@ namespace TaskBaseApp.ViewModels
 		}
 		#endregion
 		#region פקודות
-		ICommand GoToWorkCommand
+		public ICommand GoToWorkCommand
 		{
 			get;
 		}
