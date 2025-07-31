@@ -96,6 +96,10 @@ namespace TaskBaseApp.ViewModels
 		/// <summary>
 		///		
 		///</summary>
+		public ICommand GoToWorkCommand
+		{
+			get;
+		}
 		public ICommand UpdateImageCommand
 		{
 			get;
@@ -109,7 +113,10 @@ namespace TaskBaseApp.ViewModels
 		public TaskDetailsPageViewModel()
 		{
 			UpdateImageCommand=new Command(async ()=>await Shell.Current.DisplayAlert("עדכון תמונה", "המשימה עודכנה בהצלחה!", "אישור"));
+			GoToWorkCommand = new Command(async () => await OpenNavigationApp());
 		}
+
+		
 		#endregion
 
 		#region מתודות פרטיות
@@ -134,6 +141,20 @@ namespace TaskBaseApp.ViewModels
 		public void ApplyQueryAttributes(IDictionary<string, object> query)
 		{
 			SelectedTask = (UserTask)query["selectedTask"];
+		}
+
+		private async Task OpenNavigationApp()
+		{
+			try
+			{
+				bool launcherOpened = await Launcher.Default.TryOpenAsync("waze://ul?ll=40.75889500%2C-73.98513100&navigate=yes&zoom=17");
+			}
+			catch(Exception ex)
+			{
+				await Shell.Current.DisplayAlert("שגיאה", $"לא ניתן לפתוח את האפליקציה: {ex.Message}", "אישור");
+				
+			}
+			
 		}
 		#endregion
 	}
