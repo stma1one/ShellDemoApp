@@ -60,7 +60,36 @@
                 Command="{Binding GotoProfileCommand}"
                 Text="מסך פרופיל משתמש" />
         </VerticalStackLayout>
+        <Grid
+            HorizontalOptions="Fill"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Fill">
+            <BoxView
+                BackgroundColor="{StaticResource Gray100}"
+                HorizontalOptions="Fill"
+                Opacity="0.8"
+                VerticalOptions="Fill" />
+            <Border
+                Margin="20"
+                Padding="20"
+                BackgroundColor="{StaticResource Card}"
+                HorizontalOptions="Center"
+                Style="{StaticResource CardBorder}"
+                VerticalOptions="Center">
 
+                <VerticalStackLayout>
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" Color="{StaticResource Amber600}" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="ArialBold"
+                        FontSize="Medium"
+                        HorizontalOptions="Center"
+                        Text="מוסיף משימה ..."
+                        TextColor="{StaticResource Amber900}"
+                        VerticalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
 
 
     </Grid>

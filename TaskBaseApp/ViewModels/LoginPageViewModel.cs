@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TaskBaseApp.Views;
+using System.Text.Json;
 
 namespace TaskBaseApp.ViewModels;
 
@@ -141,6 +142,8 @@ public class LoginPageViewModel : ViewModelBase
 		}
 	}
 
+	private Task loadDataTask;
+
 	/// <summary>
 	/// בנאי של ה-ViewModel.
 	/// </summary>
@@ -154,6 +157,12 @@ public class LoginPageViewModel : ViewModelBase
 		LoginCommand = new Command(async()=>await Login(), CanLogin);
 		//ShowPasswordIcon = FontHelper.CLOSED_EYE_ICON; // הגדרת אייקון ברירת מחדל
 		IsPassword = true; // הגדרת שדה הסיסמה כמוסתר כברירת מחדל
+		loadDataTask = GetUserNameAsync();
+	}
+
+	private async Task? GetUserNameAsync()
+	{
+		UserName = await SecureStorage.Default.GetAsync("userName");
 	}
 
 	/// <summary>
@@ -209,6 +218,10 @@ public class LoginPageViewModel : ViewModelBase
 			LoginMessage = AppMessages.LoginMessage;
 			MessageColor = Colors.Green;
 			((App)Application.Current!).CurrentUser = db.GetCurrentUser(UserName!); // מאחסן את המשתמש הנוכחי באפליקציה
+			
+			await SecureStorage.Default.SetAsync("userName", UserName);
+
+
 			var shellVm = provider.GetService<AppShellViewModel>()!;                                                                    // כאן ניתן להוסיף ניווט לדף הבא
 		//דוגמה ליצירת SHELL אחר
 			if (UserName != "user2")
