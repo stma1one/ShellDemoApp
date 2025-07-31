@@ -96,6 +96,11 @@ namespace TaskBaseApp.ViewModels
 		{
 			get;
 		}
+
+		public ICommand ChangePhotoCommand
+		{
+			get;
+		}
 		#endregion
 		#region קונסטרוקטור (בנאי)
 		/// <summary>
@@ -104,6 +109,49 @@ namespace TaskBaseApp.ViewModels
 		public TaskDetailsPageViewModel()
 		{
 			GoToWorkCommand = new Command(async () => await OpenNavigationApp());
+			ChangePhotoCommand = new Command(async () => await ChangePhoto());
+{
+
+			};
+		}
+
+		private async Task ChangePhoto()
+		{
+			string command = await Shell.Current.DisplayActionSheet("בחר פעולה", "אישור", "ביטול", "בחר תמונה קיימת", "צלם תמונה");
+			FileResult photo = null;
+			
+			switch (command)
+			{
+				case "צלם תמונה":
+					if (MediaPicker.Default.IsCaptureSupported)
+					{
+					photo = await MediaPicker.Default.CapturePhotoAsync(new MediaPickerOptions() { Title = "בחר תמונה" } );
+
+						if (photo != null)
+						{
+							// save the file into local storage
+							string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
+
+							using Stream sourceStream = await photo.OpenReadAsync();
+							using FileStream localFileStream = File.OpenWrite(localFilePath);
+
+							await sourceStream.CopyToAsync(localFileStream);
+							CurrentTask.TaskImage = localFilePath;//c:/images/task.jpg
+							OnPropertyChanged(nameof(CurrentTask));
+						}
+					}
+					break;
+				case "בחר תמונה קיימת":
+					 photo = await MediaPicker.Default.PickPhotoAsync();
+					if (photo != null)
+					{
+						CurrentTask.TaskImage = photo.FullPath;
+						OnPropertyChanged(nameof(CurrentTask));
+					}
+					break;
+				default: break;
+			}
+
 		}
 
 		#endregion
@@ -115,7 +163,7 @@ namespace TaskBaseApp.ViewModels
 		/// </summary>
 		private async Task OpenNavigationApp()
 		{
-			throw new NotImplementedException();
+			bool isvalid = await Launcher.TryOpenAsync("waze://ul?favorite=work&navigate=yes");
 		}
 		private void UpdateCommentStatus()
 		{

@@ -29,12 +29,17 @@
                 Padding="5"
                 BackgroundColor="#40FFFFFF"
                 Stroke="#ccc"
-                StrokeShape="RoundRectangle 8"
+                StrokeShape="Rectangle 100"
                 StrokeThickness="1">
                 <Image
                     Aspect="AspectFill"
                     HeightRequest="200"
-                    Source="{Binding CurrentTask.TaskImage, TargetNullValue='dotnet_bot.png'}" />
+                    Source="{Binding CurrentTask.TaskImage, TargetNullValue='dotnet_bot.png'}"
+                    WidthRequest="200">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ChangePhotoCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
             </Border>
 
             <!--  תיאור המשימה  -->

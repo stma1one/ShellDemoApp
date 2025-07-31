@@ -142,7 +142,7 @@ public class LoginPageViewModel : ViewModelBase
 		}
 	}
 
-	private Task loadDataTask;
+	private Task? loadDataTask;
 
 	/// <summary>
 	/// בנאי של ה-ViewModel.
