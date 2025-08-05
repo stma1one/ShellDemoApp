@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TaskBaseApp.Models;
 using TaskBaseApp.Service;
+using TaskBaseApp.Services;
 
 namespace TaskBaseApp.ViewModels;
 
@@ -24,6 +25,8 @@ public class UserTasksPageViewModel:ViewModelBase
 	int userId;
         bool _hasError=false;
 	string? _searchText;
+
+	LocalDBService db;
 	#endregion
 
 
@@ -125,8 +128,9 @@ public class UserTasksPageViewModel:ViewModelBase
 	
 	#endregion
 	#region Constructor
-	public UserTasksPageViewModel(ITaskServices services)
+	public UserTasksPageViewModel(ITaskServices services, LocalDBService db)
 	{
+		this.db = db;
 		// Initialize properties or commands here if needed
 		SearchText = string.Empty;
 		UserId = 1;
@@ -193,7 +197,11 @@ public class UserTasksPageViewModel:ViewModelBase
 		{
 			userTask.Clear();
 			_allUserTasks.Clear();
-			userTask = await _taskService.GetTasks(UserId); // Assuming 1 is the User ID
+			//	userTask = await _taskService.GetTasks(UserId); // Assuming 1 is the User ID
+			userTask = (await db.GetUserTasksAsync(UserId)).
+					Select(x =>
+					new UserTask(x)
+					).ToList();
 			if (userTask != null && userTask.Count > 0)
 			{
 				foreach (var task in userTask)

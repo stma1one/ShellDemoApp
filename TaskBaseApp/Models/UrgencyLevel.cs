@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,8 @@ namespace TaskBaseApp.Models
 		/// <summary>
 		/// מזהה ייחודי של רמת הדחיפות.
 		/// </summary>
+	[PrimaryKey]
+	
 		public int UrgencyLevelId
 		{
 			get; set;

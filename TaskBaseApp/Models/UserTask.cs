@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using TaskBaseApp.Models;
+using SQLite;
+using TaskBaseApp.Models.DTOS;
 
 
 namespace TaskBaseApp.Models;
@@ -8,6 +10,8 @@ namespace TaskBaseApp.Models;
 /// <summary>
 /// מייצג משימה של משתמש.
 /// </summary>
+
+
 public class UserTask
 {
 	/// <summary>
@@ -58,12 +62,13 @@ public class UserTask
 	/// <summary>
 	/// רשימת התגובות למשימה.
 	/// </summary>
+	
 	public List<TaskComment> TaskComments { get; set; } = new List<TaskComment>();
 
 	/// <summary>
 	/// כתובת URL של תמונה המשויכת למשימה.
 	/// </summary>
-	public string TaskImage { get; set; } = null!;
+	public string TaskImage { get; set; } 
 
 	/// <summary>
 	/// בנאי ריק.
@@ -71,6 +76,32 @@ public class UserTask
 	public UserTask()
 	{
 	}
+	public UserTask(UserTaskDTO userTaskDTO)
+	{
+		TaskId = userTaskDTO.TaskId;
+		TaskDescription = userTaskDTO.TaskDescription;
+		TaskDueDate = DateOnly.FromDateTime(userTaskDTO.TaskDueDate);
+		TaskActualDate = DateOnly.FromDateTime(userTaskDTO.TaskActualDate);
+		TaskImage = userTaskDTO.TaskImage;
+		User = userTaskDTO.User;
+		UrgencyLevel = userTaskDTO.UrgencyLevel;
+		TaskComments=new List<TaskComment>();
+		if (userTaskDTO.TaskComments != null)
+		{
+			foreach (var comment in userTaskDTO.TaskComments)
+			{
+				TaskComments.Add(new TaskComment()
+				{
+					 Comment= comment.Comment,
+					 CommentDate = DateOnly.FromDateTime(comment.CommentDate),
+					 Task = this// קישור למשימה הנוכחית
+					 , CommentId = comment.CommentId
+				}
+					);
+			}
+		}
 
-	
+	}
+
+
 }

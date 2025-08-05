@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,8 @@ public class User
 	/// <summary>
 	/// זיהוי משתמש
 	/// </summary>
+	[PrimaryKey]
+	
 	public int UserId
 	{
 		get; set;
@@ -37,14 +40,14 @@ public class User
 	public string imageUrl
 	{
 		get; set;
-	} = "https://www.gravatar.com/avatar/";
+	} 
 
 
 
  	/// <summary>
 	/// האם המשתמש הוא מנהל מערכת.
 	/// </summary>
-		public bool? IsAdmin { get; set;  } = false;
+		public bool? IsAdmin { get; set;  } 
 
 	/// <summary>
 	/// שם פרטי של המשתמש. 
@@ -52,7 +55,7 @@ public class User
 	public string FirstName
 	{
 		get; set;
-	} = string.Empty;
+	} 
 
 	/// <summary>
 	///  שם משפחה של המשתמש.
@@ -60,7 +63,7 @@ public class User
 	public string LastName
 	{
 		get; set;
-	} = string.Empty;
+	} 
 
 	/// <summary>
 	/// שם מלא של המשתמש, המורכב משם פרטי ושם משפחה.

@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using SQLite;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using TaskBaseApp.Models;
 
 namespace TaskBaseApp.Models
@@ -12,6 +13,7 @@ namespace TaskBaseApp.Models
 		/// <summary>
 		/// מזהה ייחודי של התגובה.
 		/// </summary>
+		
 		public int CommentId
 		{
 			get; set;

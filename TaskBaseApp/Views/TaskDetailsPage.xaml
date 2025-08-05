@@ -25,17 +25,20 @@
         <VerticalStackLayout Padding="25" Spacing="18">
 
             <!--  תמונה ראשית של המשימה  -->
+            <!--  תמונה ראשית של המשימה  -->
             <Border
                 Padding="5"
                 BackgroundColor="#40FFFFFF"
+                HeightRequest="210"
                 Stroke="#ccc"
-                StrokeShape="Rectangle 100"
-                StrokeThickness="1">
+                StrokeShape="RoundRectangle 100"
+                StrokeThickness="1"
+                WidthRequest="210">
                 <Image
                     Aspect="AspectFill"
-                    HeightRequest="200"
+                    HeightRequest="210"
                     Source="{Binding CurrentTask.TaskImage, TargetNullValue='dotnet_bot.png'}"
-                    WidthRequest="200">
+                    WidthRequest="210">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ChangePhotoCommand}" />
                     </Image.GestureRecognizers>
