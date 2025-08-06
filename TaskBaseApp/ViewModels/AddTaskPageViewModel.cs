@@ -5,6 +5,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TaskBaseApp.Models;
+using TaskBaseApp.Models.DTOS;
+using TaskBaseApp.Services;
+using static System.Net.WebRequestMethods;
 
 namespace TaskBaseApp.ViewModels
 {
@@ -28,6 +31,8 @@ namespace TaskBaseApp.ViewModels
 
 		// הודעת שגיאה עבור רמת דחיפות
 		private string _taskUrgencyError=string.Empty;
+
+		private LocalDBService _db;
 
 		/// <summary>
 		/// תיאור המשימה שהמשתמש מזין.
@@ -180,8 +185,9 @@ namespace TaskBaseApp.ViewModels
 		/// <summary>
 		/// בנאי של ה-ViewModel.
 		/// </summary>
-		public AddTaskPageViewModel()
+		public AddTaskPageViewModel(LocalDBService db)
 		{
+			_db = db;
 			SaveTaskCommand = new Command(async () => await SaveTask(), CanSaveTask);
 			GotoProfileCommand = new Command(async () => await Shell.Current.GoToAsync("/DetailsPage"));
 			TaskDueDate = DateTime.Today; // ערך ברירת מחדל
@@ -260,10 +266,22 @@ namespace TaskBaseApp.ViewModels
 		/// </summary>
 		private async Task SaveTask()
 		{
+			var userTask = new UserTaskDTO()
+			{
+				TaskDescription = this.TaskDescription,
+				TaskDueDate = (DateTime)this.TaskDueDate,
+				UrgencyLevelId = SelectedUrgency.UrgencyLevelId,
+				 User= ((App)Application.Current).CurrentUser,
+				  UserId= ((App)Application.Current).CurrentUser.UserId,
+				  TaskImage= "https://picsum.photos/seed/docs/300/200"
+
+
+			};
 			IsBusy = true;
 			// שמור את המשימה כאן
-			await Task.Delay(5000);
+			await _db.SaveTaskAsync(userTask);
 			await Shell.Current.DisplayAlert("הצלחה", "משימה נשמרה בהצלחה", "אישור");
+			await Task.Delay(5000);
 			IsBusy = false;
 
 

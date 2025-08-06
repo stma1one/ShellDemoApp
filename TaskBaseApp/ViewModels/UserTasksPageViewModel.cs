@@ -133,14 +133,14 @@ public class UserTasksPageViewModel:ViewModelBase
 		this.db = db;
 		// Initialize properties or commands here if needed
 		SearchText = string.Empty;
-		UserId = 1;
+		UserId = (Application.Current as App).CurrentUser.UserId;
 		_taskService = services;
 		Tasks = new();
 		LoadTasksCommand = new Command(async () => await LoadUserTasksAsync());
 		FilterTaskCommand = new Command<string>(async (query) => await FilterTasks(query));
 		ClearFilterCommand = new Command(async () => await FilterTasks(string.Empty),()=>string.IsNullOrEmpty(SearchText)&&!IsLoading);
 		ChangeTaskDescriptionCommand = new Command(() => { if (Tasks.Count > 0) { Tasks[0].TaskDescription = "וואחד שינוי"; } });
-		DeleteTaskCommand = new Command<ObservableUserTask>(DeleteTask);
+		DeleteTaskCommand = new Command<ObservableUserTask>(async(t)=> await DeleteTask(t));
 		ShowDetailsPageCommand = new Command(async () => await ShowDetails());
 		loadData =LoadUserTasksAsync();
 		SelectedTask = null;
@@ -231,9 +231,10 @@ public class UserTasksPageViewModel:ViewModelBase
 			IsBusy = false;
 		}
 	}
-	private void DeleteTask(ObservableUserTask task)
+	private async Task DeleteTask(ObservableUserTask task)
 	{
 		if (task == null) return; // Ensure task is not null
+		db.DeleteTaskAsync(task.TaskId);
 		Tasks.Remove(task);
 	}
 	#endregion

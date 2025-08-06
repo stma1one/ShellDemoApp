@@ -67,7 +67,7 @@ namespace TaskBaseApp.Models.DTOS
 		public string TaskImage { get; set; } 
 
 		
-		[OneToMany(CascadeOperations = CascadeOperation.All)]
+		[OneToMany(CascadeOperations = CascadeOperation.CascadeRead|CascadeOperation.CascadeDelete)]
 		public List<TaskCommentDTO> TaskComments { get; set; }
 
 	}

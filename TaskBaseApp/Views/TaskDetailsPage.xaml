@@ -91,7 +91,7 @@
                         Grid.Column="1"
                         FontSize="16"
                         HorizontalOptions="Start"
-                        Text="{Binding CurrentTask.User.FullName}"
+                        Text="{Binding CurrentTask.User.Username}"
                         TextColor="Wheat"
                         VerticalOptions="Center" />
 
