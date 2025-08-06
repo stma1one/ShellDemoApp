@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TaskBaseApp.Views.JokePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:TaskBaseApp.Converters"
+    xmlns:models="clr-namespace:TaskBaseApp.Models"
+    xmlns:viewmodels="clr-namespace:TaskBaseApp.ViewModels"
+    Title="JokePage"
+    x:DataType="viewmodels:JokePageViewModel"
+    FlowDirection="LeftToRight">
+
+
+    <VerticalStackLayout
+        Padding="24,40,24,24"
+        BackgroundColor="{StaticResource Tertiary}"
+        Spacing="24">
+        <Border
+            Margin="0,0,0,8"
+            Padding="16"
+            BackgroundColor="{StaticResource Primary}"
+            StrokeShape="RoundRectangle 20"
+            StrokeThickness="2">
+            <Label
+                FontAttributes="Bold"
+                FontSize="28"
+                HorizontalOptions="Center"
+                Text="Joke of the Day"
+                TextColor="{StaticResource Card}" />
+        </Border>
+
+        <Border
+            Margin="0,0,0,8"
+            Padding="20"
+            BackgroundColor="{StaticResource Card}"
+            StrokeShape="RoundRectangle 16"
+            StrokeThickness="1">
+            <Label
+                FontSize="20"
+                HorizontalOptions="Center"
+                Text="{Binding SetUp}"
+                TextColor="{StaticResource Black}" />
+        </Border>
+
+        <!--  Swipe to reveal the answer for TwoPartJoke  -->
+        <Border
+            Margin="0,0,0,8"
+            Padding="20"
+            BackgroundColor="{StaticResource Amber200}"
+            InputTransparent="False"
+            IsVisible="{Binding IsVisible}"
+            StrokeShape="RoundRectangle 16"
+            StrokeThickness="1">
+
+            <Grid InputTransparent="False">
+                <Label
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    InputTransparent="False"
+                    IsVisible="{Binding IsDeliveryRevealed}"
+                    Text="{Binding Delivery}"
+                    TextColor="{StaticResource MidnightBlue}" />
+                <Label
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsDeliveryRevealed, Converter={StaticResource inverseBoolConverter}}"
+                    Text="לחצו כדי לחשוף את התשובה"
+                    TextColor="{StaticResource Black}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding RevealDeliveryCommand}" />
+
+                    </Label.GestureRecognizers>
+
+                </Label>
+            </Grid>
+
+
+        </Border>
+
+        <Border
+            Margin="0,24,0,0"
+            Padding="0"
+            BackgroundColor="{StaticResource Primary}"
+            StrokeShape="RoundRectangle 24"
+            StrokeThickness="0">
+            <Button
+                BackgroundColor="Transparent"
+                Command="{Binding GetJokeCommand}"
+                CornerRadius="24"
+                FontSize="20"
+                HeightRequest="56"
+                HorizontalOptions="FillAndExpand"
+                Text="קבלו בדיחה"
+                TextColor="{StaticResource White}" />
+        </Border>
+    </VerticalStackLayout>
+</ContentPage>

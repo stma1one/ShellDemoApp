@@ -118,7 +118,7 @@ namespace TaskBaseApp.ViewModels
 		private async Task ChangePhoto()
 		{
 			string command = await Shell.Current.DisplayActionSheet("בחר פעולה", "אישור", "ביטול", "בחר תמונה קיימת", "צלם תמונה");
-			FileResult photo = null;
+			FileResult? photo = null;
 			
 			switch (command)
 			{
@@ -136,7 +136,7 @@ namespace TaskBaseApp.ViewModels
 							using FileStream localFileStream = File.OpenWrite(localFilePath);
 
 							await sourceStream.CopyToAsync(localFileStream);
-							CurrentTask.TaskImage = localFilePath;//c:/images/task.jpg
+							CurrentTask!.TaskImage = localFilePath;//c:/images/task.jpg
 							OnPropertyChanged(nameof(CurrentTask));
 						}
 					}
@@ -145,7 +145,7 @@ namespace TaskBaseApp.ViewModels
 					 photo = await MediaPicker.Default.PickPhotoAsync();
 					if (photo != null)
 					{
-						CurrentTask.TaskImage = photo.FullPath;
+						CurrentTask!.TaskImage = photo.FullPath;
 						OnPropertyChanged(nameof(CurrentTask));
 					}
 					break;

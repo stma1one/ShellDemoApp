@@ -219,7 +219,7 @@ public class LoginPageViewModel : ViewModelBase
 			MessageColor = Colors.Green;
 			((App)Application.Current!).CurrentUser = db.GetCurrentUser(UserName!); // מאחסן את המשתמש הנוכחי באפליקציה
 			
-			await SecureStorage.Default.SetAsync("userName", UserName);
+			await SecureStorage.Default.SetAsync("userName", UserName!);
 
 
 			var shellVm = provider.GetService<AppShellViewModel>()!;                                                                    // כאן ניתן להוסיף ניווט לדף הבא

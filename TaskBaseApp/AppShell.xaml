@@ -39,6 +39,16 @@
     </FlyoutItem>
 
     <FlyoutItem />
+    <FlyoutItem Title="העולם מצחיק">
+        <ShellContent
+            Title="בדיחות לשבת"
+            ContentTemplate="{DataTemplate local:JokePage}"
+            Icon="dotnet_bot.png"
+            Route="JokePage" />
+
+
+
+    </FlyoutItem>
 
     <MenuItem
         Command="{Binding LogoutCommand}"
