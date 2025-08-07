@@ -67,8 +67,7 @@ public class TaskCommentDTO
 		if (comment.Task != null)
 		{
 			TaskId = comment.Task.TaskId;
-			// ניתן להמיר גם את המשימה ל-DTO אם צריך
-			Task = new UserTaskDTO(comment.Task);
+		
 		}
 	}
 

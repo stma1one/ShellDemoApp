@@ -104,7 +104,8 @@ public class UserTaskDTO
 		TaskActualDate = t.TaskActualDate;
 		UrgencyLevel=t.UrgencyLevel;
 		UrgencyLevelId = t.UrgencyLevel.UrgencyLevelId;
-	
+		//טעינת משימות
+		TaskComments = new List<TaskCommentDTO>(t.TaskComments.Select(t => new TaskCommentDTO(t)).ToList());
 
 
 	}

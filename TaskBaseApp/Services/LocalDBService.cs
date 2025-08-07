@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using SQLiteNetExtensionsAsync.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -118,11 +119,90 @@ public class LocalDBService
 	}
 };
 
+		await Init();
+		try
+		{
+			await database.DeleteAllAsync<User>();
+			await database.DeleteAllAsync<UrgencyLevel>();
+			await database.DeleteAllAsync<UserTaskDTO>();
+			await database.DeleteAllAsync<TaskCommentDTO>();
+		}
+		catch (Exception ex)
+		{
+			// טיפול בשגיאה במחיקת נתונים קיימים
+			Console.WriteLine($"Error deleting existing data: {ex.Message}");
+			throw;
+		}
+		// Load sample data into the database if needed
+		// טעינת נתוני דוגמה למסד הנתונים במידת הצורך
+
+		try
+		{
+			if ((await database.Table<User>().CountAsync()) == 0)
+			{
+				await database.InsertAllAsync(users);
+			}
+			if (await database.Table<UrgencyLevel>().CountAsync() == 0)
+			{
+				await database.InsertAllAsync(urgencyLevels);
+			}
+
+			if (await database.Table<UserTaskDTO>().CountAsync() == 0)
+			{
+				try
+				{
+					await database.InsertAllWithChildrenAsync(tasks, false);
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($"Error inserting tasks: {ex.Message}");
+					// שגיאה בהוספת משימות
+					throw;
+				}
+			}
+			if (await database.Table<TaskCommentDTO>().CountAsync() == 0)
+			{
+				var comments = new List<TaskCommentDTO>
+			{
+				new TaskCommentDTO
+				{
+					TaskId = tasks[0].TaskId, // משימה 1
+                    Task=tasks[0],
+					Comment = "התחלתי לעבוד על המשימה",
+					CommentDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-2))
+				},
+				new TaskCommentDTO
+				{
+					TaskId = tasks[0].TaskId, // משימה 1
+                    Task=tasks[0],
+					Comment = "המשימה מתקדמת כמתוכנן",
+					CommentDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1))
+				}
+			};
+				try
+				{
+					await database.InsertAllWithChildrenAsync(comments, false);
+				}
+				catch (Exception ex)
+				{
+					// שגיאה בהוספת תגובות
+					Console.WriteLine($"Error inserting comments: {ex.Message}");
+					throw;
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			// שגיאה בטעינת נתוני דוגמה
+			Console.WriteLine($"Error loading sample data: {ex.Message}");
+			throw;
+		}
+	}
 
 		}
 	#endregion
 
-}
+
 
 
 
