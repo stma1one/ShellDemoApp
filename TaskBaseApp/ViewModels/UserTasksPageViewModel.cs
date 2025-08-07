@@ -198,10 +198,7 @@ public class UserTasksPageViewModel:ViewModelBase
 			userTask.Clear();
 			_allUserTasks.Clear();
 			//	userTask = await _taskService.GetTasks(UserId); // Assuming 1 is the User ID
-			userTask = (await db.GetUserTasksAsync(UserId)).
-					Select(x =>
-					new UserTask(x)
-					).ToList();
+			userTask = await db.GetTasks(UserId);
 			if (userTask != null && userTask.Count > 0)
 			{
 				foreach (var task in userTask)

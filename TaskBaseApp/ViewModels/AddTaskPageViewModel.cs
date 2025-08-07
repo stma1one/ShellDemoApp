@@ -266,17 +266,7 @@ namespace TaskBaseApp.ViewModels
 		/// </summary>
 		private async Task SaveTask()
 		{
-			var userTask = new UserTaskDTO()
-			{
-				TaskDescription = this.TaskDescription,
-				TaskDueDate = (DateTime)this.TaskDueDate,
-				UrgencyLevelId = SelectedUrgency.UrgencyLevelId,
-				 User= ((App)Application.Current).CurrentUser,
-				  UserId= ((App)Application.Current).CurrentUser.UserId,
-				  TaskImage= "https://picsum.photos/seed/docs/300/200"
-
-
-			};
+			
 			IsBusy = true;
 			// שמור את המשימה כאן
 			await _db.SaveTaskAsync(userTask);

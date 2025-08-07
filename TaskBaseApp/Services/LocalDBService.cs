@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SQLite;
+﻿using SQLite;
 using SQLiteNetExtensionsAsync.Extensions;
 using TaskBaseApp.Models;
 using TaskBaseApp.Models.DTOS;
 
-namespace TaskBaseApp.Services;
+namespace TaskBaseApp.Service;
 
 /// <summary>
 /// שירות לניהול מסד נתונים מקומי.
 /// </summary>
 public class LocalDBService
+
 {
     #region Constants אזור קבועים
     /// <summary>
@@ -214,19 +210,19 @@ public class LocalDBService
     /// </summary>
     /// <param name="userId">מזהה משתמש</param>
     /// <returns>רשימת משימות</returns>
-    public async Task<List<UserTaskDTO>> GetUserTasksAsync(int userId)
+    public async Task<List<UserTask>> GetTasks(int userId)
     {
         await Init();
         try
         {
             var list = (await database.GetAllWithChildrenAsync<UserTaskDTO>(task=>task.UserId==userId));
-            return list;
+            return list.Select(t=>new UserTask(t)).ToList();
         }
         catch (Exception ex)
         {
             // שגיאה בקבלת משימות משתמש
             Console.WriteLine($"Error getting user tasks: {ex.Message}");
-            return new List<UserTaskDTO>();
+            return new List<UserTask>();
         }
     }
 
@@ -235,12 +231,24 @@ public class LocalDBService
     /// </summary>
     /// <param name="task">אובייקט משימה</param>
     /// <returns>הצלחה/כישלון</returns>
-    public async Task<bool> SaveTaskAsync(UserTaskDTO task)
+    public async Task<bool> SaveTaskAsync(UserTask task)
     {
         await Init();
-        int result = 0;
+		int result = 0;
         UrgencyLevel level= (await database.QueryAsync<UrgencyLevel>("SELECT * FROM UrgencyLevel WHERE UrgencyLevelId = ?", task.UrgencyLevelId)).FirstOrDefault();
-		task.UrgencyLevel = level; // עדכון רמת דחיפות מה DB
+        var userTask = new UserTaskDTO()
+        {
+            TaskDescription = task.TaskDescription,
+            TaskDueDate = task.TaskDueDate.ToDateTime(TimeOnly.MinValue),
+            UrgencyLevelId = level.UrgencyLevelId,
+            UrgencyLevel =level,
+            User = ((App)Application.Current).CurrentUser,
+            UserId = ((App)Application.Current).CurrentUser.UserId,
+            TaskImage = "https://picsum.photos/seed/docs/300/200"
+
+
+        };
+		
 		try
         {
             if (task.TaskId != 0)
@@ -283,5 +291,37 @@ public class LocalDBService
             return false;
         }
     }
-    #endregion
+
+	public User? GetCurrentUser(string username)
+	{
+		throw new NotImplementedException();
+	}
+
+	public bool Login(string username, string password)
+	{
+		throw new NotImplementedException();
+	}
+
+	
+
+	public bool AddTask(UserTask task)
+	{
+		throw new NotImplementedException();
+	}
+
+	public bool DeleteTask(int taskId)
+	{
+		throw new NotImplementedException();
+	}
+
+	public List<TaskComment> GetComments(int taskId)
+	{
+		throw new NotImplementedException();
+	}
+
+	public bool AddComment(TaskComment comment)
+	{
+		throw new NotImplementedException();
+	}
+	#endregion
 }

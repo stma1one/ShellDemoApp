@@ -1,5 +1,5 @@
 ﻿using TaskBaseApp.Models;
-using TaskBaseApp.Services;
+using TaskBaseApp.Service;
 using TaskBaseApp.Views;
 
 namespace TaskBaseApp
