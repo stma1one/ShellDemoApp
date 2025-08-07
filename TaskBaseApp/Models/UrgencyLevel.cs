@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLite;
 
 namespace TaskBaseApp.Models
 {
@@ -14,6 +15,9 @@ namespace TaskBaseApp.Models
 		/// <summary>
 		/// מזהה ייחודי של רמת הדחיפות.
 		/// </summary>
+		
+		[PrimaryKey]
+		
 		public int UrgencyLevelId
 		{
 			get; set;
@@ -22,7 +26,7 @@ namespace TaskBaseApp.Models
 		/// <summary>
 		/// שם רמת הדחיפות.
 		/// </summary>
-		public string UrgencyLevelName { get; set; } = null!;
+		public string UrgencyLevelName { get; set; }
 
 		/// <summary>
 		/// מחזיר את שם רמת הדחיפות כמחרוזת.

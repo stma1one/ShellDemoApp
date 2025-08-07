@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLite;
 
 namespace TaskBaseApp.Models;
 
 /// <summary>
 /// מייצג את מודל הנתונים של משתמש באפליקציה.
 /// </summary>
+
+//[SQLite.Table("UserTbl")]
 public class User
 {
 	/// <summary>
 	/// זיהוי משתמש
 	/// </summary>
+	[PrimaryKey]
 	public int UserId
 	{
 		get; set;
@@ -29,6 +33,7 @@ public class User
 	/// <summary>
 	/// סיסמת המשתמש.
 	/// </summary>
+	[Ignore]
 	public string? Password
 	{
 		get; set;
@@ -65,6 +70,8 @@ public class User
 	/// <summary>
 	/// שם מלא של המשתמש, המורכב משם פרטי ושם משפחה.
 	/// </summary>		
+	/// 
+	[Ignore]
 	public string FullName
 	{
 		get
