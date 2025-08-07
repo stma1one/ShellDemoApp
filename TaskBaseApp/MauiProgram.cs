@@ -62,6 +62,8 @@ namespace TaskBaseApp
         public static MauiAppBuilder AddServices(this MauiAppBuilder builder)
         {
             builder.Services.AddSingleton<ITaskServices, DBMokup>();
+            builder.Services.AddSingleton<LocalDBService>();
+
        
             return builder;
 		}

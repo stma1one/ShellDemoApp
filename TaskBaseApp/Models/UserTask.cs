@@ -1,6 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using TaskBaseApp.Models;
+using TaskBaseApp.Models.DTOS;
+
 
 
 namespace TaskBaseApp.Models;
@@ -71,6 +74,19 @@ public class UserTask
 	public UserTask()
 	{
 	}
+	public UserTask(UserTaskDTO t)
+	{
+		TaskId = t.TaskId;
+		User = t.User;
+		TaskDescription = t.TaskDescription;
+		TaskDueDate = DateOnly.FromDateTime(t.TaskDueDate);
+		TaskImage = t.TaskImage;
+		TaskActualDate = DateOnly.FromDateTime(t.TaskActualDate);
+		UrgencyLevel = t.UrgencyLevel;
+		
+		TaskComments = new List<TaskComment>(t.TaskComments.Select(t => new TaskComment(t)).ToList());
 
-	
+	}
+
+
 }

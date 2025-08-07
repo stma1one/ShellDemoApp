@@ -9,8 +9,7 @@ using TaskBaseApp.Models;
 using TaskBaseApp.Models.DTOS;
 using TaskBaseApp.Service;
 
-namespace TaskBaseApp.Services;
-
+namespace TaskBaseApp.Service;
 //במצב אמת המחלקה הזו
 //תממש את ממשק ITaskServices
 //ואז כל מה שישאר זה להחליף את המימוש ב
@@ -93,7 +92,7 @@ public class LocalDBService
             UrgencyLevel = urgencyLevels.FirstOrDefault(u=>u.UrgencyLevelName == "גבוהה"), // גבוהה
             UrgencyLevelId = 3, // גבוהה
             TaskDescription = "לסיים את הדוח השבועי",
-		TaskDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
+		TaskDueDate = DateTime.Now.AddDays(1),
 		TaskImage = "https://picsum.photos/seed/report/300/200"
 	},
 	new UserTaskDTO
@@ -103,7 +102,7 @@ public class LocalDBService
             UrgencyLevel = urgencyLevels.FirstOrDefault(u=>u.UrgencyLevelName == "בינונית"), // בינונית
             UrgencyLevelId = 2, // בינונית
             TaskDescription = "להתכונן לפגישת צוות",
-		TaskDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(3)),
+		TaskDueDate = DateTime.Now.AddDays(3),
 		TaskImage = "https://picsum.photos/seed/meeting/300/200"
 	},
 	new UserTaskDTO
@@ -113,8 +112,8 @@ public class LocalDBService
             UrgencyLevel = urgencyLevels.FirstOrDefault(u=>u.UrgencyLevelName == "נמוכה"), // נמוכה
             UrgencyLevelId = 1, // נמוכה
             TaskDescription = "לעדכן את תיעוד הפרויקט",
-		TaskDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(7)),
-		TaskActualDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), // משימה שהושלמה
+		TaskDueDate = DateTime.Now.AddDays(7),
+		TaskActualDate = DateTime.Now.AddDays(-1), // משימה שהושלמה
             TaskImage = "https://picsum.photos/seed/docs/300/200"
 	}
 };
@@ -169,14 +168,14 @@ public class LocalDBService
 					TaskId = tasks[0].TaskId, // משימה 1
                     Task=tasks[0],
 					Comment = "התחלתי לעבוד על המשימה",
-					CommentDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-2))
+					CommentDate = DateTime.Now.AddDays(-2)
 				},
 				new TaskCommentDTO
 				{
 					TaskId = tasks[0].TaskId, // משימה 1
                     Task=tasks[0],
 					Comment = "המשימה מתקדמת כמתוכנן",
-					CommentDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1))
+					CommentDate = DateTime.Now.AddDays(-1)
 				}
 			};
 				try
@@ -199,7 +198,56 @@ public class LocalDBService
 		}
 	}
 
+	public  async Task<List<UserTask>> GetTasksAsync(int userId)
+	{
+		try
+		{
+			await Init();
+			var DTOTasks = await database.GetAllWithChildrenAsync<UserTaskDTO>(task => task.UserId == userId);
+			return  DTOTasks.Select(dtoTask => new UserTask(dtoTask)).ToList();
 		}
+		catch (Exception ex)
+		{
+			return new List<UserTask>();
+		}
+		return new List<UserTask>();
+	}
+
+	internal async Task<bool> DeleteTaskAsync(UserTask userTask)
+	{
+		try
+		{
+			await Init();
+			var comments = await database.GetAllWithChildrenAsync<TaskCommentDTO>();
+			var beforeTask = await database.GetAllWithChildrenAsync<UserTaskDTO>();
+			var task = await database.GetWithChildrenAsync<UserTaskDTO>(userTask.TaskId);
+			
+			//var task = new UserTaskDTO(userTask);
+			await database.DeleteAsync(task,true);
+			comments = await database.GetAllWithChildrenAsync<TaskCommentDTO>();
+			beforeTask = await database.GetAllWithChildrenAsync<UserTaskDTO>();
+			return true;
+			
+		}
+		catch (Exception ex)
+		{
+
+		}
+		return false;
+	}
+	public async Task InsertTask(UserTask t)
+	{
+		await Init();
+		await database.InsertWithChildrenAsync(new UserTaskDTO(t));
+
+	}
+
+	public async Task GetUrgencyLevels( int levelId)
+	{
+		await Init();
+		await database.QueryAsync<UrgencyLevel>("Select * from UrgencyLevel WHERE UrgencyLevelId=?", levelId);
+	}
+}
 	#endregion
 
 

@@ -60,7 +60,7 @@ public class UserTaskDTO
 	/// <summary>
 	/// תאריך היעד לביצוע המשימה.
 	/// </summary>
-	public DateOnly TaskDueDate
+	public DateTime TaskDueDate
 	{
 		get; set;
 	}
@@ -68,7 +68,7 @@ public class UserTaskDTO
 	/// <summary>
 	/// תאריך הביצוע בפועל של המשימה. יכול להיות ריק אם המשימה טרם הושלמה.
 	/// </summary>
-	public DateOnly? TaskActualDate
+	public DateTime TaskActualDate
 	{
 		get; set;
 	}
@@ -78,7 +78,7 @@ public class UserTaskDTO
 	/// </summary>
 	/// 
 
-	[OneToMany(CascadeOperations = CascadeOperation.CascadeRead | CascadeOperation.CascadeDelete)]
+	[OneToMany(CascadeOperations = CascadeOperation.All)]
 	public List<TaskCommentDTO> TaskComments { get; set; } = new List<TaskCommentDTO>();
 
 	/// <summary>
@@ -99,9 +99,9 @@ public class UserTaskDTO
 		 User = t.User;
 		UserId = t.User.UserId;
 		TaskDescription = t.TaskDescription;
-		TaskDueDate = t.TaskDueDate;
+		TaskDueDate = t.TaskDueDate.ToDateTime(TimeOnly.MinValue);
 		TaskImage = t.TaskImage;
-		TaskActualDate = t.TaskActualDate;
+		TaskActualDate = ((DateOnly)t.TaskActualDate).ToDateTime(TimeOnly.MinValue);
 		UrgencyLevel=t.UrgencyLevel;
 		UrgencyLevelId = t.UrgencyLevel.UrgencyLevelId;
 		//טעינת משימות

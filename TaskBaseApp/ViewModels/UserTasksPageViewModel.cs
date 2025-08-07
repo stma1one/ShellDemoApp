@@ -24,6 +24,7 @@ public class UserTasksPageViewModel:ViewModelBase
 	int userId;
         bool _hasError=false;
 	string? _searchText;
+	LocalDBService _db;
 	#endregion
 
 
@@ -125,8 +126,9 @@ public class UserTasksPageViewModel:ViewModelBase
 	
 	#endregion
 	#region Constructor
-	public UserTasksPageViewModel(ITaskServices services)
+	public UserTasksPageViewModel(ITaskServices services,LocalDBService db)
 	{
+		_db = db;
 		// Initialize properties or commands here if needed
 		SearchText = string.Empty;
 		UserId = 1;
@@ -136,7 +138,7 @@ public class UserTasksPageViewModel:ViewModelBase
 		FilterTaskCommand = new Command<string>(async (query) => await FilterTasks(query));
 		ClearFilterCommand = new Command(async () => await FilterTasks(string.Empty),()=>string.IsNullOrEmpty(SearchText)&&!IsLoading);
 		ChangeTaskDescriptionCommand = new Command(() => { if (Tasks.Count > 0) { Tasks[0].TaskDescription = "וואחד שינוי"; } });
-		DeleteTaskCommand = new Command<ObservableUserTask>(DeleteTask);
+		DeleteTaskCommand = new Command<ObservableUserTask>(async(t)=>await DeleteTask(t));
 		ShowDetailsPageCommand = new Command(async () => await ShowDetails());
 		loadData =LoadUserTasksAsync();
 		SelectedTask = null;
@@ -193,7 +195,8 @@ public class UserTasksPageViewModel:ViewModelBase
 		{
 			userTask.Clear();
 			_allUserTasks.Clear();
-			userTask = await _taskService.GetTasks(UserId); // Assuming 1 is the User ID
+			//	userTask = await _taskService.GetTasks(UserId); // Assuming 1 is the User ID
+			userTask = await _db.GetTasksAsync(UserId);
 			if (userTask != null && userTask.Count > 0)
 			{
 				foreach (var task in userTask)
@@ -223,10 +226,14 @@ public class UserTasksPageViewModel:ViewModelBase
 			IsBusy = false;
 		}
 	}
-	private void DeleteTask(ObservableUserTask task)
+	private async Task DeleteTask(ObservableUserTask task)
 	{
 		if (task == null) return; // Ensure task is not null
-		Tasks.Remove(task);
+
+		if(await _db.DeleteTaskAsync(task.ToUserTask()))
+				Tasks.Remove(task);
 	}
+
+	
 	#endregion
 }

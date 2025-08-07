@@ -48,7 +48,7 @@ public class TaskCommentDTO
 	/// <summary>
 	/// תאריך יצירת התגובה.
 	/// </summary>
-	public DateOnly CommentDate
+	public DateTime CommentDate
 	{
 		get; set;
 	}
@@ -63,7 +63,7 @@ public class TaskCommentDTO
 	{
 		CommentId = comment.CommentId;
 		Comment = comment.Comment;
-		CommentDate = comment.CommentDate;
+		CommentDate = comment.CommentDate.ToDateTime(TimeOnly.MinValue);
 		if (comment.Task != null)
 		{
 			TaskId = comment.Task.TaskId;
