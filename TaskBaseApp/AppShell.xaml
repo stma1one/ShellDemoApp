@@ -40,6 +40,11 @@
 
     <FlyoutItem />
 
+    <FlyoutItem Title="צחוקים">
+        <ShellContent ContentTemplate="{DataTemplate local:JokePage}" Route="JokePage" />
+    </FlyoutItem>
+
+
     <MenuItem
         Command="{Binding LogoutCommand}"
         IconImageSource="logout.png"

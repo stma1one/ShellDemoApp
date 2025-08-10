@@ -31,10 +31,11 @@ public class LocalDBService
 	#endregion
 
 	#region Properties אזור מאפיינים
-	/// <summary>
+	/// <summary/>
 
 	/// הנתיב לקובץ מסד הנתונים.
-	/// </summary>
+	/// 
+	 
 	string DatabasePath =>
 		Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
 
@@ -210,7 +211,7 @@ public class LocalDBService
 		{
 			return new List<UserTask>();
 		}
-		return new List<UserTask>();
+		
 	}
 
 	internal async Task<bool> DeleteTaskAsync(UserTask userTask)
@@ -235,9 +236,10 @@ public class LocalDBService
 		}
 		return false;
 	}
-	public async Task InsertTask(UserTask t)
+	public async Task InsertTaskAsync(UserTask t)
 	{
 		await Init();
+		
 		await database.InsertWithChildrenAsync(new UserTaskDTO(t));
 
 	}

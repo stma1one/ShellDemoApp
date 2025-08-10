@@ -84,7 +84,7 @@ public class UserTaskDTO
 	/// <summary>
 	/// כתובת URL של תמונה המשויכת למשימה.
 	/// </summary>
-	public string TaskImage { get; set; } = null!;
+	public string TaskImage { get; set; }
 
 	/// <summary>
 	/// בנאי ריק.
@@ -100,8 +100,8 @@ public class UserTaskDTO
 		UserId = t.User.UserId;
 		TaskDescription = t.TaskDescription;
 		TaskDueDate = t.TaskDueDate.ToDateTime(TimeOnly.MinValue);
-		TaskImage = t.TaskImage;
-		TaskActualDate = ((DateOnly)t.TaskActualDate).ToDateTime(TimeOnly.MinValue);
+		TaskImage= t.TaskImage??"dotnet_bot.png";
+		TaskActualDate = (t.TaskActualDate!=null)?((DateOnly)t.TaskActualDate).ToDateTime(TimeOnly.MinValue):DateTime.Now;
 		UrgencyLevel=t.UrgencyLevel;
 		UrgencyLevelId = t.UrgencyLevel.UrgencyLevelId;
 		//טעינת משימות

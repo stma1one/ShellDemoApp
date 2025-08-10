@@ -3,8 +3,10 @@
 using System;
 
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using TaskBaseApp.Models;
+using TaskBaseApp.Service;
 
 namespace TaskBaseApp.ViewModels
 {
@@ -28,6 +30,8 @@ namespace TaskBaseApp.ViewModels
 
 		// הודעת שגיאה עבור רמת דחיפות
 		private string _taskUrgencyError=string.Empty;
+
+		private LocalDBService _db;
 
 		/// <summary>
 		/// תיאור המשימה שהמשתמש מזין.
@@ -180,8 +184,9 @@ namespace TaskBaseApp.ViewModels
 		/// <summary>
 		/// בנאי של ה-ViewModel.
 		/// </summary>
-		public AddTaskPageViewModel()
+		public AddTaskPageViewModel(LocalDBService db)
 		{
+			_db = db;
 			SaveTaskCommand = new Command(async () => await SaveTask(), CanSaveTask);
 			GotoProfileCommand = new Command(async () => await Shell.Current.GoToAsync("/DetailsPage"));
 			TaskDueDate = DateTime.Today; // ערך ברירת מחדל
@@ -263,8 +268,29 @@ namespace TaskBaseApp.ViewModels
 			IsBusy = true;
 			// שמור את המשימה כאן
 			await Task.Delay(5000);
-			await Shell.Current.DisplayAlert("הצלחה", "משימה נשמרה בהצלחה", "אישור");
-			IsBusy = false;
+			UserTask task = new UserTask()
+			{
+				TaskDueDate = DateOnly.FromDateTime((DateTime)this.TaskDueDate),
+				TaskDescription = this.TaskDescription,
+				UrgencyLevel = this.SelectedUrgency,
+				User = ((App)Application.Current).CurrentUser
+				 
+			};
+			try
+			{
+				
+				await _db.InsertTaskAsync(task);
+				await Shell.Current.DisplayAlert("הצלחה", "משימה נשמרה בהצלחה", "אישור");
+				IsBusy = false;
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine("unable to save task to db" + ex.Message);
+			}
+			finally
+			{
+				IsBusy = false;
+			}
 
 
 		}
