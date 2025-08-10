@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TaskBaseApp.Models;
 using System.ComponentModel;
 using System.Windows.Input;
+using TaskBaseApp.Services;
 
 namespace TaskBaseApp.ViewModels
 {
@@ -25,6 +26,7 @@ namespace TaskBaseApp.ViewModels
 		private UserTask? _selectedTask;
 		private bool _hasComments;
 		private string _commentsTitle = "אין תגובות";
+		private UserAndFileServices _service;
 		#endregion
 
 		#region מאפיינים ל-Data Binding
@@ -101,13 +103,15 @@ namespace TaskBaseApp.ViewModels
 		{
 			get;
 		}
+
 		#endregion
 		#region קונסטרוקטור (בנאי)
 		/// <summary>
 		/// בנאי. במצב קריאה בלבד, אין צורך להזריק שירותים או לאתחל פקודות.
 		/// </summary>
-		public TaskDetailsPageViewModel()
+		public TaskDetailsPageViewModel(UserAndFileServices service)
 		{
+			_service = service;
 			GoToWorkCommand = new Command(async () => await OpenNavigationApp());
 			ChangePhotoCommand = new Command(async () => await ChangePhoto());
 {
@@ -119,26 +123,28 @@ namespace TaskBaseApp.ViewModels
 		{
 			string command = await Shell.Current.DisplayActionSheet("בחר פעולה", "אישור", "ביטול", "בחר תמונה קיימת", "צלם תמונה");
 			FileResult photo = null;
-			
+			string localFilePath = string.Empty;
 			switch (command)
 			{
 				case "צלם תמונה":
 					if (MediaPicker.Default.IsCaptureSupported)
 					{
-					photo = await MediaPicker.Default.CapturePhotoAsync(new MediaPickerOptions() { Title = "בחר תמונה" } );
+					photo = await MediaPicker.Default.CapturePhotoAsync( );
+						{
 
 						if (photo != null)
-						{
 							// save the file into local storage
-							string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
+							localFilePath= Path.Combine(FileSystem.CacheDirectory, photo.FileName);
 
 							using Stream sourceStream = await photo.OpenReadAsync();
 							using FileStream localFileStream = File.OpenWrite(localFilePath);
 
 							await sourceStream.CopyToAsync(localFileStream);
-							CurrentTask.TaskImage = localFilePath;//c:/images/task.jpg
+							CurrentTask.TaskImage = localFilePath;
 							OnPropertyChanged(nameof(CurrentTask));
 						}
+							if (await _service.UploadImageAsync(localFilePath))
+								await AppShell.Current.DisplayAlert("Yes!", "Yes", "OK");
 					}
 					break;
 				case "בחר תמונה קיימת":
@@ -147,6 +153,8 @@ namespace TaskBaseApp.ViewModels
 					{
 						CurrentTask.TaskImage = photo.FullPath;
 						OnPropertyChanged(nameof(CurrentTask));
+						if(await _service.UploadImageAsync(photo.FullPath))
+							await AppShell.Current.DisplayAlert("Yes!", "Yes", "OK");
 					}
 					break;
 				default: break;

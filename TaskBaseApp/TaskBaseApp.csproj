@@ -71,6 +71,10 @@
 	  <Compile Update="MyAppShell.xaml.cs">
 	    <DependentUpon>MyAppShell.xaml</DependentUpon>
 	  </Compile>
+		
+	  <Compile Update="Views\AddAccountPage.xaml.cs">
+	    <DependentUpon>AddAccountPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\UserProfilePage.xaml.cs">
 	    <DependentUpon>UserProfilePage.xaml</DependentUpon>
 	  </Compile>
@@ -87,6 +91,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\FontsIcons.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\AddAccountPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\AddTaskPage.xaml">

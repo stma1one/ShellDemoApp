@@ -41,6 +41,7 @@ namespace TaskBaseApp
             builder.Services.AddTransient<Views.UserTasksPage>();
             builder.Services.AddTransient<Views.TaskDetailsPage>();
             builder.Services.AddTransient<JokePage>();
+            builder.Services.AddSingleton<AddAccountPage>();
             builder.Services.AddSingleton<AppShell>();
 
 
@@ -56,6 +57,7 @@ namespace TaskBaseApp
 			builder.Services.AddTransient<TaskDetailsPageViewModel>();
             builder.Services.AddSingleton<AppShellViewModel>();
             builder.Services.AddSingleton<JokePageViewModel>();
+            builder.Services.AddSingleton<AddAccountPageViewModel>();
           
             return builder;
 		}
@@ -67,6 +69,7 @@ namespace TaskBaseApp
             builder.Services.AddSingleton<ITaskServices, DBMokup>();
             builder.Services.AddSingleton<LocalDBService>();
             builder.Services.AddSingleton<JokeServiceApi>();
+            builder.Services.AddSingleton<UserAndFileServices>();
 
        
             return builder;

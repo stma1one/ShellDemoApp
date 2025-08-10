@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TaskBaseApp.Views.AddAccountPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:TaskBaseApp.ViewModels"
+    Title="הוספת משתמש חדש"
+    x:DataType="viewmodels:AddAccountPageViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="16">
+            <Label
+                FontAttributes="Bold"
+                FontSize="28"
+                HorizontalOptions="Center"
+                Text="הוספת משתמש חדש" />
+
+            <Entry Placeholder="שם משתמש" Text="{Binding Username}" />
+            <Entry
+                IsPassword="True"
+                Placeholder="סיסמה"
+                Text="{Binding Password}" />
+            <Entry Placeholder="שם פרטי" Text="{Binding FirstName}" />
+            <Entry Placeholder="שם משפחה" Text="{Binding LastName}" />
+            <Entry
+                Keyboard="Email"
+                Placeholder="אימייל"
+                Text="{Binding Email}" />
+            <Entry Placeholder="קישור לתמונה (לא חובה)" Text="{Binding ImageUrl}" />
+
+            <Switch IsToggled="{Binding IsAdmin}" />
+            <Label Text="מנהל מערכת" />
+
+            <Button
+                Command="{Binding CreateAccountCommand}"
+                IsEnabled="{Binding CanCreateAccount}"
+                Text="צור חשבון" />
+
+            <Label
+                HorizontalOptions="Center"
+                IsVisible="{Binding IsMessageVisible}"
+                Text="{Binding Message}"
+                TextColor="{Binding MessageColor}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -44,6 +44,10 @@
         <ShellContent ContentTemplate="{DataTemplate local:JokePage}" Route="JokePage" />
     </FlyoutItem>
 
+    <FlyoutItem Title="הרשמה">
+        <ShellContent ContentTemplate="{DataTemplate local:AddAccountPage}" Route="AddAccount" />
+    </FlyoutItem>
+
 
     <MenuItem
         Command="{Binding LogoutCommand}"
