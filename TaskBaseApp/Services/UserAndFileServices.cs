@@ -71,7 +71,7 @@ namespace TaskBaseApp.Services
 
 
 			//לעטוף אותו במוליטפארט
-			multiPartContent.Add(fileContent);
+			multiPartContent.Add(fileContent,"file", Path.GetFileName(filePath));
 
 			//לשלוח לשרת
 			HttpResponseMessage response = await client.PostAsync($@"{URL}files/upload", multiPartContent);
